@@ -24,14 +24,29 @@ class SaveSubscriptionService
 
     public static function saveSubscription(SubscriptionDto $subscriptionDto)
     {
+
+
+        $appId = $subscriptionDto->appId;
+
         /** @var Subscription $subscription */
 
         $subscription = Subscription::where('device_id', $subscriptionDto->deviceId)
+            ->whereHas('application', function($query) use ($appId) {
+                $query->where('app_id', $appId);
+            })
             ->where('original_transaction_id', $subscriptionDto->originalTransactionId)->first();
 
         if (is_null($subscription)) {
+
+            $applicationService = new ApplicationService();
+
+            $application = $applicationService->getApplicationByAppId($subscriptionDto->appId);
+
+
+
             $subscription = Subscription::create([
                 'id' => Str::uuid(),
+                'application_id' => $application->id,
                 'device_id' => $subscriptionDto->deviceId,
                 'product_id' => $subscriptionDto->productId,
                 'environment' => $subscriptionDto->environment,

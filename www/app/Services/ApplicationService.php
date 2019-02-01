@@ -11,7 +11,7 @@ class ApplicationService
         return Application::findOrFail($id);
     }
 
-    public function getApplicationByAppId($appId)
+    public function getApplicationByAppId($appId) : ?Application
     {
         return Application::where('app_id', $appId)
             ->firstOrFail();

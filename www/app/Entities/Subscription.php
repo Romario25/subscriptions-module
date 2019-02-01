@@ -36,4 +36,10 @@ class Subscription extends Model
     public $guarded = [];
 
     protected $table = 'subscriptions';
+
+
+    public function application()
+    {
+        return $this->belongsTo(Application::class, 'application_id', 'id');
+    }
 }

@@ -4,6 +4,8 @@ namespace App\DTO;
 
 class SubscriptionDto
 {
+    public $appId;
+
     public $deviceId;
 
     public $originalTransactionId;
@@ -22,6 +24,7 @@ class SubscriptionDto
 
     /**
      * SubscriptionDto constructor.
+     * @param $appId
      * @param $deviceId
      * @param $originalTransactionId
      * @param $productId
@@ -31,8 +34,9 @@ class SubscriptionDto
      * @param $endDate
      * @param $latestReceipt
      */
-    public function __construct($deviceId, $originalTransactionId, $productId, $environment, $type, $startDate, $endDate, $latestReceipt)
+    public function __construct($appId, $deviceId, $originalTransactionId, $productId, $environment, $type, $startDate, $endDate, $latestReceipt)
     {
+        $this->appId = $appId;
         $this->deviceId = $deviceId;
         $this->originalTransactionId = $originalTransactionId;
         $this->productId = $productId;

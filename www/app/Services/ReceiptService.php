@@ -2,6 +2,7 @@
 namespace App\Services;
 
 
+use App\Entities\Application;
 use GuzzleHttp\RequestOptions;
 
 class ReceiptService
@@ -17,9 +18,9 @@ class ReceiptService
 
 
 
-    private function getAppleUrl() : string
+    private function getAppleUrl($environment) : string
     {
-        if ($this->config['environment_sandbox']) {
+        if ($environment == Application::ENV_SANDBOX) {
             return 'https://sandbox.itunes.apple.com/verifyReceipt';
         }
 
@@ -27,18 +28,18 @@ class ReceiptService
     }
 
 
-    public function sendReceipt($receiptData)
+    public function sendReceipt($receiptData, $environment, $shareSecret)
     {
         $client = new \GuzzleHttp\Client();
 
         $body = [
             'receipt-data' => $receiptData,
-            'exlude-old-transactions' => $this->config['exlude-old-transactions'],
-            'password' => $this->config['password']
+            'exlude-old-transactions' => true,
+            'password' => $shareSecret
 
         ];
 
-        $response = $client->post($this->getAppleUrl(),
+        $response = $client->post($this->getAppleUrl($environment),
             [RequestOptions::JSON => $body]
         );
 

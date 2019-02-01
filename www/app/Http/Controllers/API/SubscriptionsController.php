@@ -13,34 +13,33 @@ class SubscriptionsController extends Controller
     public function verifiedReceipt(VerifyReceiptRequest $request, SubscriptionsService $subscriptionsService)
     {
 
-        dd($request->all());
+     //   dd($request->all());
 
         \Log::info('VERIFIED RECEIPT ', [
             'data' => $request->all()
         ]);
 
-//        $responseByApple = $subscriptionsService->getResponseAppleReceipt(
-//            $request->input('app_id'),
-//            $request->input('receipt-data')
-//        );
-//
-//        $verifiedReceived = $subscriptionsService->verifyReceipt($responseByApple);
-//
-//        $responseByAppleBody = json_decode($responseByApple['body']);
-//
-//
-//
-//        $environment = $responseByAppleBody->environment;
-//
-//        $subscriptionsService->handlerReceipt(
-//            $request->input('device_id'),
-//            $environment,
-//            $responseByAppleBody->latest_receipt,
-//            $responseByAppleBody->latest_receipt_info,
-//            $responseByAppleBody->pending_renewal_info[0]
-//        );
-//
-//        return $verifiedReceived;
+        $responseByApple = $subscriptionsService->getResponseAppleReceipt(
+            $request->input('app_id'),
+            $request->input('receipt-data')
+        );
+
+        $verifiedReceived = $subscriptionsService->verifyReceipt($responseByApple);
+
+        $responseByAppleBody = json_decode($responseByApple['body']);
+
+        $environment = $responseByAppleBody->environment;
+
+        $subscriptionsService->handlerReceipt(
+            $request->input('app_id'),
+            $request->input('udid'),
+            $environment,
+            $responseByAppleBody->latest_receipt,
+            $responseByAppleBody->latest_receipt_info,
+            $responseByAppleBody->pending_renewal_info[0]
+        );
+
+        return $verifiedReceived;
 
         
     }

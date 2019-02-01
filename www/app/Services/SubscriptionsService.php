@@ -4,18 +4,23 @@ namespace App\Services;
 
 
 
+use App\DTO\SubscriptionDto;
+use App\Entities\Subscription;
+use Carbon\Carbon;
+
 class SubscriptionsService
 {
 
     private $config;
     private $verifyService;
     private $receiptService;
+    private $applicationService;
 
-    public function __construct(ReceiptService $receiptService, VerifyService $verifyService)
+    public function __construct(ReceiptService $receiptService, VerifyService $verifyService, ApplicationService $applicationService)
     {
-        $this->config = config('subscriptions');
         $this->verifyService = $verifyService;
         $this->receiptService = $receiptService;
+        $this->applicationService = $applicationService;
     }
 
 
@@ -25,7 +30,7 @@ class SubscriptionsService
         HandlerAppleWebhook::handler($data);
     }
 
-    public function handlerReceipt($deviceId, $environment, $latestReceipt, $latestReceiptInfo, $pendingRenewalInfo)
+    public function handlerReceipt($appId, $deviceId, $environment, $latestReceipt, $latestReceiptInfo, $pendingRenewalInfo)
     {
 
         $endLatestReceiptInfo = end($latestReceiptInfo);
@@ -34,6 +39,7 @@ class SubscriptionsService
 
 
         $subscriptionDTO = new SubscriptionDto(
+            $appId,
             $deviceId,
             $endLatestReceiptInfo->original_transaction_id,
             $endLatestReceiptInfo->product_id,
@@ -47,6 +53,9 @@ class SubscriptionsService
         $subscription = SaveSubscriptionService::saveSubscription($subscriptionDTO);
 
         $diffTransaction = SaveSubscriptionService::checkReceiptHistory($latestReceiptInfo, $subscription);
+
+
+
 
         if (count($diffTransaction) == 1) {
             AppslyerService::sendEvent(
@@ -69,25 +78,32 @@ class SubscriptionsService
 
             }
         }
-
-
-        if ($type == Subscription::TYPE_CANCEL) {
-            SaveSubscriptionService::createCancelReceiptHistory($subscription);
-
-            $event = $this->getEventBySubscription($subscription);
-
-            AppslyerService::sendEvent(
-                $event,
-                '2DD5392C-ACA8-40C1-A309-2875582C3567',
-                $deviceId,
-                0);
-        }
+//
+//
+//        if ($type == Subscription::TYPE_CANCEL) {
+//            SaveSubscriptionService::createCancelReceiptHistory($subscription);
+//
+//            $event = $this->getEventBySubscription($subscription);
+//
+//            AppslyerService::sendEvent(
+//                $event,
+//                '2DD5392C-ACA8-40C1-A309-2875582C3567',
+//                $deviceId,
+//                0);
+//        }
 
     }
 
     public function getResponseAppleReceipt($appId, $latestReceipt)
     {
-        return $this->receiptService->sendReceipt($latestReceipt);
+        $application = $this->applicationService->getApplicationByAppId($appId);
+
+
+        return $this->receiptService->sendReceipt(
+            $latestReceipt,
+            $application->environment,
+            $application->shared_secret
+        );
     }
 
 

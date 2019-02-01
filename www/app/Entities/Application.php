@@ -10,11 +10,19 @@ use Illuminate\Database\Eloquent\Model;
  * @package App\Entities
  *
  * @property string appsflyer_dev_key
+ * @property string environment
  * @property integer send_stat_appsflyer
  * @property integer send_stat_facebook
+ * @property string shared_secret
  */
 class Application extends Model
 {
+
+    const ENV_SANDBOX = 'sandbox';
+
+    const ENV_PROD = 'prod';
+
+
     public $guarded = [];
 
     protected $table = 'applications';

@@ -15,16 +15,17 @@ class SubscriptionsHistoryCreateTable extends Migration
     {
         Schema::create('subscriptions_history', function (Blueprint $table) {
             $table->string('id');
+            $table->string('subscription_id');
             $table->timestamps();
-            $table->integer('user_id')->nullable();
-            $table->string('device_id');
             $table->string('product_id');
+            $table->string('transaction_id');
             $table->string('environment');
-            $table->string('original_transaction_id');
-            $table->string('type');
             $table->bigInteger('start_date');
             $table->bigInteger('end_date');
-            $table->text('latest_receipt');
+            $table->string('type');
+            $table->integer('count')->default(0);
+            $table->text('receipt')->nullable();
+
         });
     }
 

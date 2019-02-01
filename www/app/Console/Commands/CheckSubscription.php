@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Services\SubscriptionsService;
 use Illuminate\Console\Command;
 
 class CheckSubscription extends Command
@@ -31,9 +32,7 @@ class CheckSubscription extends Command
     }
 
     /**
-     * Execute the console command.
-     *
-     * @return mixed
+     * @param SubscriptionsService $subscriberService
      */
     public function handle(SubscriptionsService $subscriberService)
     {
