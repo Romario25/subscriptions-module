@@ -11,6 +11,9 @@ class SetDataController extends Controller
 {
     public function appsflyer(SetDataAppsflyerRequest $request, SetDataService $setDataService)
     {
+        \Log::info('SET DATA CONTROLLER');
+
+
         $setDataService->saveAppsflyerData(
             $request->input('udid'),
             $request->input('appsflyer_id'),
