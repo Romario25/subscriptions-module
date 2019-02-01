@@ -15,6 +15,8 @@ use Illuminate\Http\Request;
 
 Route::post('/webhook/apple/{applicationID}', ['uses' => 'API\WebhookController@apple']);
 
+Route::post('/verified-receipt', ['uses' => 'API\SubscriptionsController@verifiedReceipt']);
+
 Route::post('/set-appsflyer-data', ['uses' => 'API\SetDataController@appsflyer']);
 
 Route::post("/application/add", ['uses' => 'API\ApplicationController@add']);

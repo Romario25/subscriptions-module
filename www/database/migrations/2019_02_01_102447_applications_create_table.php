@@ -23,6 +23,7 @@ class ApplicationsCreateTable extends Migration
             $table->smallInteger('send_stat_appsflyer')->default(0);
             $table->smallInteger('send_stat_facebook')->default(0);
             $table->string('appsflyer_dev_key')->nullable();
+            $table->string('shared_secret')->nullable();
         });
     }
 

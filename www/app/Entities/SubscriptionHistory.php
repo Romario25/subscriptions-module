@@ -1,5 +1,5 @@
 <?php
-namespace Romario25\Subscriptions\Entities;
+namespace App\Entities;
 
 /**
  * Class SubscriptionHistory
