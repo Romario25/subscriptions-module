@@ -7,17 +7,17 @@ use GuzzleHttp\RequestOptions;
 
 class AppslyerService
 {
-    
-    public static function sendEvent($eventName, $idfa, $deviceId, $price, $currency = 'USD')
+
+    public static function sendEvent($devToken, $eventName, $appId, $idfa, $bundleId, $deviceId, $price, $currency = 'USD')
     {
 
         $config = config('subscriptions');
 
         $body = [
-            'appsflyer_id' => $config['appsflyer']['APP_ID'],
+            'appsflyer_id' => $appId,
             'eventName' => $eventName,
             'af_events_api' => "true",
-            'bundle_id' => $config['appsflyer']['BUNDLE'],
+            'bundle_id' => $bundleId,
             'eventCurrency' => $currency,
             'customer_user_id' => $deviceId,
             'device_id' => $deviceId
@@ -39,10 +39,10 @@ class AppslyerService
         ]);
 
         try {
-            $response = $client->request('POST', 'https://api2.appsflyer.com/inappevent/id' . $config['appsflyer']['APP_ID'], [
+            $response = $client->request('POST', 'https://api2.appsflyer.com/inappevent/id' . $appId, [
                 RequestOptions::JSON => $body,
                 'headers' => [
-                    'authentication' => $config['appsflyer']['DEV_TOKEN'],
+                    'authentication' => $devToken,
                 ]
             ]);
 

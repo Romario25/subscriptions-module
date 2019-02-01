@@ -11,7 +11,6 @@ use Carbon\Carbon;
 class SubscriptionsService
 {
 
-    private $config;
     private $verifyService;
     private $receiptService;
     private $applicationService;
@@ -54,40 +53,46 @@ class SubscriptionsService
 
         $diffTransaction = SaveSubscriptionService::checkReceiptHistory($latestReceiptInfo, $subscription);
 
+        $idfa = $this->applicationService->getIdfa($subscription->application->id, $subscription->device_id);
 
 
-//
+
+
 //        if (count($diffTransaction) == 1) {
 //            AppslyerService::sendEvent(
+//                $subscription->application->appsflyer_dev_key,
 //                $this->getEventBySubscription($subscription),
-//                '2DD5392C-ACA8-40C1-A309-2875582C3567',
+//                $subscription->application->app_id,
+//                $idfa,
+//                $subscription->application->bundle_id,
 //                $deviceId,
 //                0);
 //        } else {
-//            foreach ($diffTransaction as $transaction) {
-//                $transactionHistory = SubscriptionHistory::where('transaction_id', $transaction)
-//                    ->first();
-//
-//
-//
-//                AppslyerService::sendEvent(
-//                    $this->getEventBySubscription($transactionHistory),
-//                    '2DD5392C-ACA8-40C1-A309-2875582C3567',
-//                    $deviceId,
-//                    0);
-//
-//            }
+////            foreach ($diffTransaction as $transaction) {
+////                $transactionHistory = SubscriptionHistory::where('transaction_id', $transaction)
+////                    ->first();
+////
+////
+////
+////                AppslyerService::sendEvent(
+////                    $this->getEventBySubscription($transactionHistory),
+////                    '2DD5392C-ACA8-40C1-A309-2875582C3567',
+////                    $deviceId,
+////                    0);
+////
+////            }
 //        }
 //
 //
 //        if ($type == Subscription::TYPE_CANCEL) {
 //            SaveSubscriptionService::createCancelReceiptHistory($subscription);
 //
-//            $event = $this->getEventBySubscription($subscription);
-//
 //            AppslyerService::sendEvent(
-//                $event,
-//                '2DD5392C-ACA8-40C1-A309-2875582C3567',
+//                $subscription->application->appsflyer_dev_key,
+//                $this->getEventBySubscription($subscription),
+//                $subscription->application->app_id,
+//                $idfa,
+//                $subscription->application->bundle_id,
 //                $deviceId,
 //                0);
 //        }
@@ -214,9 +219,14 @@ class SubscriptionsService
         //dd($subscriptions);
         foreach ($subscriptions as $subscription) {
 
+            /** @var Subscription $subscription */
+
             \Log::info('SUBCRIPTION ID : ' . $subscription->id);
 
-            $responseByApple = $this->getResponseAppleReceipt($subscription->latest_receipt);
+            $responseByApple = $this->getResponseAppleReceipt(
+                $subscription->application->app_id,
+                $subscription->latest_receipt
+            );
 
             $responseByAppleBody = json_decode($responseByApple['body']);
 
@@ -225,6 +235,7 @@ class SubscriptionsService
             $environment = $responseByAppleBody->environment;
 
             $this->handlerReceipt(
+                $subscription->application->app_id,
                 $subscription->device_id,
                 $environment,
                 $responseByAppleBody->latest_receipt,

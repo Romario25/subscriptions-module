@@ -3,6 +3,7 @@ namespace App\Services;
 
 
 use App\Entities\Application;
+use App\Entities\ApplicationDevice;
 
 class ApplicationService
 {
@@ -25,5 +26,17 @@ class ApplicationService
             'name' => $name,
             'environment' => $environment
         ]);
+    }
+
+    public function getIdfa($applicationId, $deviceId)
+    {
+        $applicationDevice =  ApplicationDevice::where('application_id', $applicationId)
+            ->where('device_id', $deviceId)->first();
+
+        if (!is_null($applicationDevice)) {
+            return $applicationDevice->idfa;
+        }
+
+        return null;
     }
 }
