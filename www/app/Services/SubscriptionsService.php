@@ -56,28 +56,28 @@ class SubscriptionsService
 
 
 
-
-        if (count($diffTransaction) == 1) {
-            AppslyerService::sendEvent(
-                $this->getEventBySubscription($subscription),
-                '2DD5392C-ACA8-40C1-A309-2875582C3567',
-                $deviceId,
-                0);
-        } else {
-            foreach ($diffTransaction as $transaction) {
-                $transactionHistory = SubscriptionHistory::where('transaction_id', $transaction)
-                    ->first();
-
-
-
-                AppslyerService::sendEvent(
-                    $this->getEventBySubscription($transactionHistory),
-                    '2DD5392C-ACA8-40C1-A309-2875582C3567',
-                    $deviceId,
-                    0);
-
-            }
-        }
+//
+//        if (count($diffTransaction) == 1) {
+//            AppslyerService::sendEvent(
+//                $this->getEventBySubscription($subscription),
+//                '2DD5392C-ACA8-40C1-A309-2875582C3567',
+//                $deviceId,
+//                0);
+//        } else {
+//            foreach ($diffTransaction as $transaction) {
+//                $transactionHistory = SubscriptionHistory::where('transaction_id', $transaction)
+//                    ->first();
+//
+//
+//
+//                AppslyerService::sendEvent(
+//                    $this->getEventBySubscription($transactionHistory),
+//                    '2DD5392C-ACA8-40C1-A309-2875582C3567',
+//                    $deviceId,
+//                    0);
+//
+//            }
+//        }
 //
 //
 //        if ($type == Subscription::TYPE_CANCEL) {
