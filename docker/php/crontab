@@ -1,0 +1,5 @@
+* * * * * root echo "Hello Romario" >> /var/log/cron.log 2>&1
+
+* * * * * root /usr/local/bin/php /app/artisan schedule:run >> /var/log/cron.log 2>&1
+
+* * * * * root echo "Hello Romario 2" >> /var/log/cron.log 2>&1

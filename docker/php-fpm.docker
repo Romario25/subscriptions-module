@@ -1,0 +1,29 @@
+FROM php:7.1-fpm
+
+RUN apt-get update && apt-get install -y libmcrypt-dev mysql-client cron supervisor \
+    && docker-php-ext-install mcrypt pdo_mysql
+
+RUN pecl install xdebug
+
+RUN docker-php-ext-enable xdebug
+
+ADD ./php/xdebug.ini /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+
+ADD ./php/default.ini /usr/local/etc/php/conf.d/default.ini
+
+ADD ./php/crontab /etc/cron.d/schedule-cron
+
+RUN chmod 0644 /etc/cron.d/schedule-cron
+
+RUN touch /var/log/cron.log
+
+#CMD cron && tail -f /var/log/cron.log
+
+COPY ./php/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
+
+
+WORKDIR /app
+
+CMD ["/usr/bin/supervisord"]
+#CMD ["/usr/bin/supervisord","-c","/etc/supervisor/supervisord.conf"]

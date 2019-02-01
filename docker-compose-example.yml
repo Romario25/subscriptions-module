@@ -1,0 +1,68 @@
+version: '3'
+services:
+    nginx:
+        build:
+            context: ./docker
+            dockerfile: nginx.docker
+        volumes:
+            - ./www:/app
+        depends_on:
+            - php-fpm
+        networks:
+              subscriptions-project:
+                ipv4_address: 10.13.0.105
+    php-fpm:
+        build:
+            context: ./docker
+            dockerfile: php-fpm.docker
+        volumes:
+            - ./www:/app
+        environment:
+          - "DB_PORT=3306"
+          - "DB_HOST=mysql"
+          - PHP_IDE_CONFIG=serverName=subscriptions
+          - XDEBUG_CONFIG=remote_host=10.13.0.105
+        depends_on:
+            - mysql
+        networks:
+            subscriptions-project:
+
+    php-cli:
+        build:
+            context: ./
+            dockerfile: docker/php-cli.docker
+        volumes:
+            - ./www:/app
+        depends_on:
+            - mysql
+
+        environment:
+            - "DB_PORT=3306"
+            - "DB_HOST=mysql"
+        tty: true
+
+        networks:
+            subscriptions-project:
+
+    mysql:
+        image: mysql:5.7
+        volumes:
+            - ./mysql:/var/lib/mysql
+        environment:
+            - "MYSQL_ROOT_PASSWORD=password"
+            - "MYSQL_DATABASE=subscriptions"
+
+        networks:
+            subscriptions-project:
+              ipv4_address: 10.13.0.106
+
+
+
+
+networks:
+  subscriptions-project:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.13.0.0/24
