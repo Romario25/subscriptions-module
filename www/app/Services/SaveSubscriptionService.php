@@ -114,13 +114,14 @@ class SaveSubscriptionService
 
         $arrayTransactionId = array_keys($collect);
 
-        $deviceId = $subscription->deviceId;
+        $deviceId = $subscription->device_id;
 
         $savedAlreadyTransactionId = SubscriptionHistory::whereHas('subscription', function($query) use ($deviceId) {
             $query->where('device_id', $deviceId);
         })->pluck('transaction_id')->toArray();
 
         $arrayDiffTransactionId = array_diff($arrayTransactionId, $savedAlreadyTransactionId);
+
 
         if (count($arrayDiffTransactionId) > 0) {
             foreach ($arrayDiffTransactionId as $transactionId) {

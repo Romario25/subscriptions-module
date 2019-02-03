@@ -5,7 +5,9 @@ namespace App\Services;
 
 
 use App\DTO\SubscriptionDto;
+use App\Entities\ApplicationProduct;
 use App\Entities\Subscription;
+use App\Entities\SubscriptionHistory;
 use Carbon\Carbon;
 
 class SubscriptionsService
@@ -55,47 +57,82 @@ class SubscriptionsService
 
         $idfa = $this->applicationService->getIdfa($subscription->application->id, $subscription->device_id);
 
+        $startDate = Carbon::now()->startOfDay()->timestamp;
 
 
 
-//        if (count($diffTransaction) == 1) {
-//            AppslyerService::sendEvent(
-//                $subscription->application->appsflyer_dev_key,
-//                $this->getEventBySubscription($subscription),
-//                $subscription->application->app_id,
-//                $idfa,
-//                $subscription->application->bundle_id,
-//                $deviceId,
-//                0);
-//        } else {
-////            foreach ($diffTransaction as $transaction) {
-////                $transactionHistory = SubscriptionHistory::where('transaction_id', $transaction)
-////                    ->first();
-////
-////
-////
-////                AppslyerService::sendEvent(
-////                    $this->getEventBySubscription($transactionHistory),
-////                    '2DD5392C-ACA8-40C1-A309-2875582C3567',
-////                    $deviceId,
-////                    0);
-////
-////            }
-//        }
-//
-//
-//        if ($type == Subscription::TYPE_CANCEL) {
-//            SaveSubscriptionService::createCancelReceiptHistory($subscription);
-//
-//            AppslyerService::sendEvent(
-//                $subscription->application->appsflyer_dev_key,
-//                $this->getEventBySubscription($subscription),
-//                $subscription->application->app_id,
-//                $idfa,
-//                $subscription->application->bundle_id,
-//                $deviceId,
-//                0);
-//        }
+        if (count($diffTransaction) == 1) {
+
+            $event = $this->getEventBySubscription($subscription);
+
+            AppslyerService::sendEvent(
+                $subscription->application->appsflyer_dev_key,
+                $event['name'],
+                $subscription->application->app_id,
+                $idfa,
+                $subscription->application->bundle_id,
+                $deviceId,
+                $event['price']);
+
+            if ($event['price'] > 0) {
+                AppslyerService::sendEvent(
+                    $subscription->application->appsflyer_dev_key,
+                    'af_purchase',
+                    $subscription->application->app_id,
+                    $idfa,
+                    $subscription->application->bundle_id,
+                    $deviceId,
+                    $event['price']);
+            }
+        } else {
+            if (count($diffTransaction) > 0) {
+
+                $endDiffTransaction = end($diffTransaction);
+
+                $transactionHistory = SubscriptionHistory::where('transaction_id', $endDiffTransaction->transaction_id)
+                    ->first();
+
+                $event = $this->getEventBySubscription($transactionHistory);
+
+                AppslyerService::sendEvent(
+                    $subscription->application->appsflyer_dev_key,
+                    $event['name'],
+                    $subscription->application->app_id,
+                    $idfa,
+                    $subscription->application->bundle_id,
+                    $deviceId,
+                    $event['price']);
+
+                if ($event['price'] > 0) {
+                    AppslyerService::sendEvent(
+                        $subscription->application->appsflyer_dev_key,
+                        'af_purchase',
+                        $subscription->application->app_id,
+                        $idfa,
+                        $subscription->application->bundle_id,
+                        $deviceId,
+                        $event['price']);
+                }
+
+
+            }
+
+
+        }
+
+
+        if ($type == Subscription::TYPE_CANCEL) {
+            SaveSubscriptionService::createCancelReceiptHistory($subscription);
+
+            AppslyerService::sendEvent(
+                $subscription->application->appsflyer_dev_key,
+                $this->getEventBySubscription($subscription),
+                $subscription->application->app_id,
+                $idfa,
+                $subscription->application->bundle_id,
+                $deviceId,
+                0);
+        }
 
     }
 
@@ -175,9 +212,9 @@ class SubscriptionsService
 
     public function getEventBySubscription($subscription)
     {
-        $config = config('subscriptions');
 
-        $eventDuration = $config['events_duration'];
+        $eventDuration = ApplicationProduct::where('application_id', $subscription->application_id)
+            ->get()->keyBy('product_name')->toArray();
 
         $subscriptionType = $subscription->type;
 
@@ -185,7 +222,9 @@ class SubscriptionsService
 
         $event = '';
 
-        $key = array_search($subscription->product_id, $eventDuration);
+        $key = array_search($subscription->product_id, array_keys($eventDuration));
+
+        $price =0;
 
         switch ($subscriptionType) {
             case Subscription::TYPE_TRIAL:
@@ -193,11 +232,13 @@ class SubscriptionsService
             break;
             case Subscription::TYPE_INITIAL_BUY:
                 $event = $prefix . $key . '_1';
+                $price = $eventDuration[$key]['price'];
             break;
             case Subscription::TYPE_RENEWAL:
                 $count = SubscriptionHistory::where('subscription_id')
                     ->where('type', Subscription::TYPE_RENEWAL)->count();
                 $event = $prefix . $key . '_' . $count;
+                $price = $eventDuration[$key]['price'];
             break;
             case Subscription::TYPE_CANCEL:
                 $count = SubscriptionHistory::where('subscription_id')
@@ -206,7 +247,10 @@ class SubscriptionsService
             break;
         }
 
-        return $event;
+        return [
+            'event_name' => $event,
+            'price' => $price
+        ];
     }
 
     public function checkSubscription()
