@@ -216,7 +216,7 @@ class SubscriptionsService
         if (!isset($endReceiptInfo->expires_date_ms) && (isset($pendingRenewalInfo->expiration_intent)) && $pendingRenewalInfo->expiration_intent == 1) {
             return Subscription::TYPE_LIFETIME;
         }
-
+\Log::info('receipt info', ['data' => $endReceiptInfo]);
         if ($endReceiptInfo->is_trial_period == "true") {
             return Subscription::TYPE_TRIAL;
         }
