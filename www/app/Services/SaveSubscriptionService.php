@@ -118,10 +118,10 @@ class SaveSubscriptionService
             $query->where('device_id', $deviceId);
         })->pluck('transaction_id')->toArray();
 
-        $savedAlreadyTransactionIdKey = array_keys($savedAlreadyTransactionId);
-\Log::info('savedAlreadyTransactionIdKey', ['data' => $savedAlreadyTransactionIdKey]);
-        $arrayDiffTransactionId = array_diff($arrayTransactionId, $savedAlreadyTransactionIdKey);
 
+\Log::info('savedAlreadyTransactionIdKey', ['data' => $savedAlreadyTransactionId]);
+        $arrayDiffTransactionId = array_diff($arrayTransactionId, $savedAlreadyTransactionId);
+        \Log::info('arrayDiffTransactionId', ['data' => $arrayDiffTransactionId]);
 
         if (count($arrayDiffTransactionId) > 0) {
             foreach ($arrayDiffTransactionId as $transactionId) {
