@@ -55,6 +55,10 @@ class SubscriptionsService
 
         $diffTransaction = SaveSubscriptionService::checkReceiptHistory($latestReceiptInfo, $subscription);
 
+        \Log::info('DIFF TRANSACTION', [
+            'data' => $diffTransaction
+        ]);
+
         $idfa = $this->applicationService->getIdfa($subscription->application->id, $subscription->device_id);
 
         $startDate = Carbon::now()->startOfDay()->timestamp;
