@@ -30,7 +30,7 @@ class AppslyerService
 
         $eventValue = [];
 
-        if ($price > 0) {
+        if ($price > 0 && ($eventName == 'test_af_purchase' || $eventName == 'af_purchase')) {
             $eventValue = [
                 'af_revenue' => (string) $price
             ];
