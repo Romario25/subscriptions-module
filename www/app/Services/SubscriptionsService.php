@@ -34,6 +34,9 @@ class SubscriptionsService
     public function handlerReceipt($appId, $deviceId, $environment, $latestReceipt, $latestReceiptInfo, $pendingRenewalInfo)
     {
 
+
+
+
         $endLatestReceiptInfo = end($latestReceiptInfo);
 
         $type = $this->defineType($pendingRenewalInfo, $latestReceiptInfo);
@@ -56,9 +59,7 @@ class SubscriptionsService
 
         $diffTransaction = SaveSubscriptionService::checkReceiptHistory($latestReceiptInfo, $subscription);
 
-        \Log::info('DIFF TRANSACTION', [
-            'data' => $diffTransaction
-        ]);
+
 
         $idfa = $this->applicationService->getIdfa($subscription->application->id, $subscription->device_id);
 
@@ -93,9 +94,7 @@ class SubscriptionsService
 
                 $endDiffTransaction = end($diffTransaction);
 
-                \Log::info('END DIFF ', [
-                    'data' => $endDiffTransaction
-                ]);
+
 
 
                 if (isset($endDiffTransaction->start_date) && $endDiffTransaction->start_date > $startDate * 1000) {
@@ -203,15 +202,22 @@ class SubscriptionsService
 
 
 
-        if (isset($latestReceiptInfo->expires_date_ms) && (isset($pendingRenewalInfo->expiration_intent)) && $pendingRenewalInfo->expiration_intent == 1 ) {
-            return Subscription::TYPE_CANCEL;
-        }
 
         $receiptInfo = $this->sortLatestReceiptInfo($latestReceiptInfo);
 
         $endReceiptInfo = end($receiptInfo);
 
         $countReceiptInfo = count($receiptInfo);
+
+//        \Log::info('pending', ['data' => $pendingRenewalInfo]);
+//        \Log::info('end receipt', ['data' => $endReceiptInfo]);
+//        \Log::info('count receipt', ['data' => $countReceiptInfo]);
+
+        if (isset($endReceiptInfo->expires_date_ms) && (isset($pendingRenewalInfo->expiration_intent)) && $pendingRenewalInfo->expiration_intent == 1 ) {
+            return Subscription::TYPE_CANCEL;
+        }
+
+
 
         if (!isset($endReceiptInfo->expires_date_ms) && (isset($pendingRenewalInfo->expiration_intent)) && $pendingRenewalInfo->expiration_intent == 1) {
             return Subscription::TYPE_LIFETIME;
