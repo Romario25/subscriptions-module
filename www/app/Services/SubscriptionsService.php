@@ -36,7 +36,7 @@ class SubscriptionsService
 
         $endLatestReceiptInfo = end($latestReceiptInfo);
 
-        $type = $this->defineType($pendingRenewalInfo, $endLatestReceiptInfo);
+        $type = $this->defineType($pendingRenewalInfo, $latestReceiptInfo);
 
 
 
@@ -207,16 +207,21 @@ class SubscriptionsService
             return Subscription::TYPE_CANCEL;
         }
 
+        $receiptInfo = $this->sortLatestReceiptInfo($latestReceiptInfo);
+
+        $endReceiptInfo = end($receiptInfo);
+
+        $countReceiptInfo = count($receiptInfo);
 
         if (!isset($endReceiptInfo->expires_date_ms) && (isset($pendingRenewalInfo->expiration_intent)) && $pendingRenewalInfo->expiration_intent == 1) {
             return Subscription::TYPE_LIFETIME;
         }
 
-        if ($latestReceiptInfo->is_trial_period == "true") {
+        if ($endReceiptInfo->is_trial_period == "true") {
             return Subscription::TYPE_TRIAL;
         }
 
-        if ($countReceiptInfo == 1 && $latestReceiptInfo->is_trial_period == "false") {
+        if ($countReceiptInfo == 1 && $endReceiptInfo->is_trial_period == "false") {
             return Subscription::TYPE_INITIAL_BUY;
         }
 
