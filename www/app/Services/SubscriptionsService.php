@@ -125,14 +125,14 @@ class SubscriptionsService
 
             $event = $this->getEventBySubscription($subscription);
 
-//            AppslyerService::sendEvent(
-//                $subscription->application->appsflyer_dev_key,
-//                $event['event_name'],
-//                $subscription->application->app_id,
-//                $idfa,
-//                $subscription->application->bundle_id,
-//                $deviceId,
-//                $event['price']);
+            AppslyerService::sendEvent(
+                $subscription->application->appsflyer_dev_key,
+                $event['event_name'],
+                $subscription->application->app_id,
+                $idfa,
+                $subscription->application->bundle_id,
+                $deviceId,
+                $event['price']);
         }
 
     }
@@ -221,8 +221,6 @@ class SubscriptionsService
         $eventDuration = ApplicationProduct::where('application_id', $subscription->application_id)
             ->get()->keyBy('product_name')->toArray();
 
-
-        dd($eventDuration);
 
         $subscriptionType = $subscription->type;
 
