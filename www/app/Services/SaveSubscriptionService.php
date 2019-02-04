@@ -121,7 +121,7 @@ class SaveSubscriptionService
 
 
         $arrayDiffTransactionId = array_diff($arrayTransactionId, $savedAlreadyTransactionId);
-        
+
 
         if (count($arrayDiffTransactionId) > 0) {
             foreach ($arrayDiffTransactionId as $transactionId) {

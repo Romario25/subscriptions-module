@@ -34,9 +34,6 @@ class SubscriptionsService
     public function handlerReceipt($appId, $deviceId, $environment, $latestReceipt, $latestReceiptInfo, $pendingRenewalInfo)
     {
 
-
-
-
         $endLatestReceiptInfo = end($latestReceiptInfo);
 
         $type = $this->defineType($pendingRenewalInfo, $latestReceiptInfo);
@@ -304,6 +301,10 @@ class SubscriptionsService
                     ->where('type', Subscription::TYPE_RENEWAL)->count();
                 $event = $prefix . 'cancel_' . $applicationProduct['event_name'] . '_' . $count;
             break;
+            case Subscription::TYPE_LIFETIME:
+                $price = $applicationProduct['price'];
+                $event = $prefix . $applicationProduct['event_name'];
+                break;
         }
 
         return [
