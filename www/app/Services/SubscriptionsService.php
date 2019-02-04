@@ -198,12 +198,12 @@ class SubscriptionsService
 
         $countReceiptInfo = count($receiptInfo);
 
-        if ($endReceiptInfo->is_trial_period == "true") {
-            return Subscription::TYPE_TRIAL;
-        }
-
         if (!isset($endReceiptInfo->expires_date_ms)) {
             return Subscription::TYPE_LIFETIME;
+        }
+
+        if ($endReceiptInfo->is_trial_period == "true") {
+            return Subscription::TYPE_TRIAL;
         }
 
         if ($countReceiptInfo == 1 && $endReceiptInfo->is_trial_period == "false") {
