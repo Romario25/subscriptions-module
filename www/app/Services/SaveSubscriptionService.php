@@ -125,14 +125,26 @@ class SaveSubscriptionService
 
         if (count($arrayDiffTransactionId) > 0) {
             foreach ($arrayDiffTransactionId as $transactionId) {
+
+                $type = Subscription::TYPE_RENEWAL;
+
+                if ($collect[$transactionId]->is_trial_period == "true") {
+                    $type = Subscription::TYPE_TRIAL;
+                } else {
+                    if (!isset($collect[$transactionId]->expires_date_ms)) {
+                        $type = Subscription::TYPE_LIFETIME;
+                    }
+                }
+
+
                 $subscriptionHistoryDTO = new SubscriptionHistoryDto(
                     $subscription->id,
                     $transactionId,
                     $collect[$transactionId]->product_id,
                     $subscription->environment,
                     $collect[$transactionId]->purchase_date_ms,
-                    $collect[$transactionId]->expires_date_ms,
-                    ($collect[$transactionId]->is_trial_period == "true") ? Subscription::TYPE_TRIAL : Subscription::TYPE_RENEWAL,
+                    (isset($collect[$transactionId]->expires_date_ms)) ? $collect[$transactionId]->expires_date_ms : 0,
+                    $type,
                     0
                 );
 
