@@ -125,6 +125,10 @@ class SubscriptionsService
         }
 
 
+        \Log::info("TYPE ", [
+            "data" => $type
+        ]);
+
         if ( count($diffTransaction) == 0 && $type == Subscription::TYPE_CANCEL ) {
 
 
