@@ -317,7 +317,7 @@ class SubscriptionsService
     {
         $now = Carbon::now()->timestamp;
 
-        $environment = 'Sandbox';
+        $environment = 'Production';
       //  \Log::info('NOW : ' . $now);
         $subscriptions = Subscription::where('end_date', '<', $now * 1000)
             ->where('environment', $environment)
