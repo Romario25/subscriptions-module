@@ -139,10 +139,11 @@ class SubscriptionsService
         if ( count($diffTransaction) == 0 && $type == Subscription::TYPE_CANCEL ) {
 
             $latestRecordSubscriptionHistory = SubscriptionHistory::where('subscription_id', $subscription->id)
-                ->orderBy('created_at', 'DESC')->limit(1)->first();
+                ->orderBy('start_date', 'DESC')->limit(1)->first();
 
             \Log::info("TYPE LATEST", [
-                "data" => $latestRecordSubscriptionHistory->type
+                "data" => $latestRecordSubscriptionHistory->type,
+                "start_date" => $latestRecordSubscriptionHistory->start_date
             ]);
 
             if ($latestRecordSubscriptionHistory->type != Subscription::TYPE_CANCEL) {
