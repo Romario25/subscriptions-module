@@ -11,7 +11,7 @@ class AppslyerService
     public static function sendEvent($devToken, $eventName, $appId, $idfa, $bundleId, $deviceId, $price, $currency = 'USD')
     {
 
-        $config = config('subscriptions');
+
 
         $body = [
             'appsflyer_id' => $appId,
