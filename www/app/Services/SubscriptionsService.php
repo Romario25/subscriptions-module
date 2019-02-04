@@ -141,7 +141,11 @@ class SubscriptionsService
             $latestRecordSubscriptionHistory = SubscriptionHistory::where('subscription_id', $subscription->id)
                 ->orderBy('created_at', 'DESC')->limit(1)->first();
 
-            if ($latestRecordSubscriptionHistory != Subscription::TYPE_CANCEL) {
+            \Log::info("TYPE LATEST", [
+                "data" => $latestRecordSubscriptionHistory->type
+            ]);
+
+            if ($latestRecordSubscriptionHistory->type != Subscription::TYPE_CANCEL) {
                 SaveSubscriptionService::createCancelReceiptHistory($subscription, $latestRecordSubscriptionHistory);
 
                 $event = $this->getEventBySubscription($subscription);
@@ -155,7 +159,7 @@ class SubscriptionsService
                     $deviceId,
                     $event['price']);
             }
-            
+
         }
 
     }
