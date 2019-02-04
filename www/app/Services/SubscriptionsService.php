@@ -230,7 +230,11 @@ class SubscriptionsService
 
         $event = '';
 
-        $key = array_search($subscription->product_id, array_keys($eventDuration));
+        $keyEventDuration = array_keys($eventDuration);
+
+        $keySearch = array_search($subscription->product_id, array_keys($eventDuration));
+
+        $key = $eventDuration[$keyEventDuration[$keySearch]];
 
         $price =0;
 
