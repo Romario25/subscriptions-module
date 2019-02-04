@@ -97,7 +97,7 @@ class SubscriptionsService
                 ]);
 
 
-                if ($endDiffTransaction->start_date > $startDate * 1000) {
+                if (isset($endDiffTransaction->start_date) && $endDiffTransaction->start_date > $startDate * 1000) {
                     $transactionHistory = SubscriptionHistory::where('transaction_id', $endDiffTransaction->transaction_id)
                         ->first();
 
