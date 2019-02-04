@@ -58,7 +58,7 @@ class SubscriptionsService
         $idfa = $this->applicationService->getIdfa($subscription->application->id, $subscription->device_id);
 
         $startDate = Carbon::now()->startOfDay()->timestamp;
-        
+
 
         if (count($diffTransaction) == 1) {
 
@@ -221,6 +221,9 @@ class SubscriptionsService
         $eventDuration = ApplicationProduct::where('application_id', $subscription->application_id)
             ->get()->keyBy('product_name')->toArray();
 
+
+        dd($eventDuration);
+
         $subscriptionType = $subscription->type;
 
         $prefix = 'test_';
@@ -240,13 +243,13 @@ class SubscriptionsService
                 $price = $eventDuration[$key]['price'];
             break;
             case Subscription::TYPE_RENEWAL:
-                $count = SubscriptionHistory::where('subscription_id')
+                $count = SubscriptionHistory::where('subscription_id', $subscription->id)
                     ->where('type', Subscription::TYPE_RENEWAL)->count();
                 $event = $prefix . $key . '_' . $count;
                 $price = $eventDuration[$key]['price'];
             break;
             case Subscription::TYPE_CANCEL:
-                $count = SubscriptionHistory::where('subscription_id')
+                $count = SubscriptionHistory::where('subscription_id', $subscription->id)
                     ->where('type', Subscription::TYPE_RENEWAL)->count();
                 $event = $prefix . 'cancel_' . $key . '_' . $count;
             break;
