@@ -165,8 +165,7 @@ class SaveSubscriptionService
     public static function createCancelReceiptHistory($subscription, $latestRecordSubscriptionHistory)
     {
 
-
-        $subscriptionHistoryDTO = new SubscriptionHistoryDto(
+        $subscriptionHistoryDto = new SubscriptionHistoryDto(
             $subscription->id,
             $latestRecordSubscriptionHistory->transaction_id,
             $latestRecordSubscriptionHistory->product_id,
@@ -177,6 +176,16 @@ class SaveSubscriptionService
             0
         );
 
-        SaveSubscriptionService::saveSubscriptionHistory($subscriptionHistoryDTO);
+        $subscriptionHistory = SubscriptionHistory::create([
+            'id' => $subscriptionHistoryDto->id,
+            'subscription_id' => $subscriptionHistoryDto->subscriptionId,
+            'product_id' => $subscriptionHistoryDto->productId,
+            'environment' => $subscriptionHistoryDto->environment,
+            'start_date' => $subscriptionHistoryDto->startDate,
+            'end_date' => $subscriptionHistoryDto->endDate,
+            'type' => $subscriptionHistoryDto->type,
+            'transaction_id' => $subscriptionHistoryDto->transactionId,
+            'count' => $subscriptionHistoryDto->count
+        ]);
     }
 }
