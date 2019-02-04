@@ -234,7 +234,7 @@ class SubscriptionsService
 
         $keySearch = array_search($subscription->product_id, array_keys($eventDuration));
 
-        $key = $eventDuration[$keyEventDuration[$keySearch]]['event_name'];
+        $applicationProduct = $eventDuration[$keyEventDuration[$keySearch]];
 
         $price =0;
 
@@ -244,27 +244,27 @@ class SubscriptionsService
             break;
             case Subscription::TYPE_INITIAL_BUY:
                 $event = $prefix . $key . '_1';
-                $price = $eventDuration[$key]['price'];
+                $price = $applicationProduct['price'];
             break;
             case Subscription::TYPE_RENEWAL:
                 $count = SubscriptionHistory::where('subscription_id', $subscription->id)
                     ->where('type', Subscription::TYPE_RENEWAL)->count();
-                $event = $prefix . $key . '_' . $count;
+                $event = $prefix . $applicationProduct['event_name'] . '_' . $count;
 
                 \Log::info('EVENT DURATION ', [
                    'data' =>  $eventDuration
                 ]);
 
                 \Log::info('EVENT DURATION KEY', [
-                    'data' =>  $key
+                    'data' =>  $applicationProduct
                 ]);
 
-                $price = $eventDuration[$key]['price'];
+                $price = $applicationProduct['price'];
             break;
             case Subscription::TYPE_CANCEL:
                 $count = SubscriptionHistory::where('subscription_id', $subscription->id)
                     ->where('type', Subscription::TYPE_RENEWAL)->count();
-                $event = $prefix . 'cancel_' . $key . '_' . $count;
+                $event = $prefix . 'cancel_' . $applicationProduct['event_name'] . '_' . $count;
             break;
         }
 
