@@ -25,6 +25,7 @@ class Subscription extends Model
     const TYPE_INITIAL_BUY = 'INITIAL_BUY';
     const TYPE_RENEWAL = 'RENEWAL';
     const TYPE_CANCEL = 'CANCEL';
+    const TYPE_LIFETIME = "LIFETIME";
 
 
 

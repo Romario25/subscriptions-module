@@ -67,7 +67,7 @@ class SubscriptionsService
 
             AppslyerService::sendEvent(
                 $subscription->application->appsflyer_dev_key,
-                $event['name'],
+                $event['event_name'],
                 $subscription->application->app_id,
                 $idfa,
                 $subscription->application->bundle_id,
@@ -77,7 +77,7 @@ class SubscriptionsService
             if ($event['price'] > 0) {
                 AppslyerService::sendEvent(
                     $subscription->application->appsflyer_dev_key,
-                    'af_purchase',
+                    'test_af_purchase',
                     $subscription->application->app_id,
                     $idfa,
                     $subscription->application->bundle_id,
@@ -96,7 +96,7 @@ class SubscriptionsService
 
                 AppslyerService::sendEvent(
                     $subscription->application->appsflyer_dev_key,
-                    $event['name'],
+                    $event['event_name'],
                     $subscription->application->app_id,
                     $idfa,
                     $subscription->application->bundle_id,
@@ -124,14 +124,16 @@ class SubscriptionsService
         if ($type == Subscription::TYPE_CANCEL) {
             SaveSubscriptionService::createCancelReceiptHistory($subscription);
 
+            $event = $this->getEventBySubscription($subscription);
+
             AppslyerService::sendEvent(
                 $subscription->application->appsflyer_dev_key,
-                $this->getEventBySubscription($subscription),
+                $event['event_name'],
                 $subscription->application->app_id,
                 $idfa,
                 $subscription->application->bundle_id,
                 $deviceId,
-                0);
+                $event['price']);
         }
 
     }
@@ -194,6 +196,10 @@ class SubscriptionsService
 
         if ($endReceiptInfo->is_trial_period == "true") {
             return Subscription::TYPE_TRIAL;
+        }
+
+        if (!isset($endReceiptInfo->expires_date_ms)) {
+            return Subscription::TYPE_LIFETIME;
         }
 
         if ($countReceiptInfo == 1 && $endReceiptInfo->is_trial_period == "false") {
