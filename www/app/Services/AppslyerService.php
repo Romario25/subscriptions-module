@@ -27,9 +27,15 @@ class AppslyerService
             $body['idfa'] = $idfa;
         }
 
-        $eventValue = [
-            'af_revenue' => (string) $price
-        ];
+
+        $eventValue = [];
+
+        if ($price > 0) {
+            $eventValue = [
+                'af_revenue' => (string) $price
+            ];
+        }
+        
 
         $body['eventValue'] = json_encode($eventValue);
 
