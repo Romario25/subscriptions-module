@@ -36,7 +36,8 @@ class SubscriptionsService
 
         $endLatestReceiptInfo = end($latestReceiptInfo);
 
-        $type = $this->defineType($pendingRenewalInfo, $latestReceiptInfo);
+        $type = $this->defineType($pendingRenewalInfo, $endLatestReceiptInfo);
+
 
 
         $subscriptionDTO = new SubscriptionDto(
@@ -200,16 +201,9 @@ class SubscriptionsService
     private function defineType($pendingRenewalInfo, $latestReceiptInfo)
     {
 
-        \Log::info('PENDING', [
-            "data" => $pendingRenewalInfo
-        ]);
-
-        \Log::info('LATEST', [
-            "data" => $latestReceiptInfo
-        ]);
 
 
-        if (isset($latestReceiptInfo->expires_date_ms) && (isset($pendingRenewalInfo->expiration_intent)) &&$pendingRenewalInfo->expiration_intent == 1 ) {
+        if (isset($latestReceiptInfo->expires_date_ms) && (isset($pendingRenewalInfo->expiration_intent)) && $pendingRenewalInfo->expiration_intent == 1 ) {
             return Subscription::TYPE_CANCEL;
         }
 
@@ -306,8 +300,11 @@ class SubscriptionsService
     public function checkSubscription()
     {
         $now = Carbon::now()->timestamp;
+
+        $environment = 'Sandbox';
       //  \Log::info('NOW : ' . $now);
         $subscriptions = Subscription::where('end_date', '<', $now * 1000)
+            ->where('environment', $environment)
             ->whereIn('type', [Subscription::TYPE_TRIAL, Subscription::TYPE_INITIAL_BUY, Subscription::TYPE_RENEWAL])
             ->get();
 

@@ -51,22 +51,22 @@ class AppslyerService
             ]);
 
 
-            $response = $client->request('POST', 'https://api2.appsflyer.com/inappevent/id' . $appId, [
-                RequestOptions::JSON => $body,
-                'headers' => [
-                    'authentication' => $devToken,
-                ]
-            ]);
-
-            $body = $response->getBody();
-
-
-            $phrase = $response->getReasonPhrase();
-
-            if ($phrase != 'OK') {
-                \Log::error('Bad response from apps flyer analytics:'.PHP_EOL.$response->getBody());
-                return;
-            }
+//            $response = $client->request('POST', 'https://api2.appsflyer.com/inappevent/id' . $appId, [
+//                RequestOptions::JSON => $body,
+//                'headers' => [
+//                    'authentication' => $devToken,
+//                ]
+//            ]);
+//
+//            $body = $response->getBody();
+//
+//
+//            $phrase = $response->getReasonPhrase();
+//
+//            if ($phrase != 'OK') {
+//                \Log::error('Bad response from apps flyer analytics:'.PHP_EOL.$response->getBody());
+//                return;
+//            }
 
         } catch (\Exception $e) {
             \Log::error('SEND EVENT APPSFLYER : :'. $e->getMessage());

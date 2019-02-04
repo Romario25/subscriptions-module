@@ -36,7 +36,7 @@ class CheckSubscription extends Command
      */
     public function handle(SubscriptionsService $subscriberService)
     {
-        //  \Log::info('CHECK SUBSCRIPTION');
+          \Log::info('CHECK SUBSCRIPTION');
         $subscriberService->checkSubscription();
     }
 }
