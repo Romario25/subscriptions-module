@@ -110,9 +110,6 @@ class SaveSubscriptionService
             ->keyBy('transaction_id')->toArray();
 
 
-
-        $lastCollect = end($collect);
-
         $arrayTransactionId = array_keys($collect);
 
         $deviceId = $subscription->device_id;
@@ -121,7 +118,9 @@ class SaveSubscriptionService
             $query->where('device_id', $deviceId);
         })->pluck('transaction_id')->toArray();
 
-        $arrayDiffTransactionId = array_diff($arrayTransactionId, $savedAlreadyTransactionId);
+        $savedAlreadyTransactionIdKey = array_keys($savedAlreadyTransactionId);
+
+        $arrayDiffTransactionId = array_diff($arrayTransactionId, $savedAlreadyTransactionIdKey);
 
 
         if (count($arrayDiffTransactionId) > 0) {
