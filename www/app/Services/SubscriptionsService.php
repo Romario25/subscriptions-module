@@ -125,7 +125,9 @@ class SubscriptionsService
         }
 
 
-        if ( $type == Subscription::TYPE_CANCEL) {
+        if ( count($diffTransaction) == 0 && $type == Subscription::TYPE_CANCEL ) {
+
+
             SaveSubscriptionService::createCancelReceiptHistory($subscription);
 
             $event = $this->getEventBySubscription($subscription);
