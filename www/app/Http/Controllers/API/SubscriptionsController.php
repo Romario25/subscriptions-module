@@ -36,7 +36,7 @@ class SubscriptionsController extends Controller
                 $request->input('app_id'),
                 $request->input('udid'),
                 $environment,
-                $responseByAppleBody->latest_receipt,
+                (isset($responseByAppleBody->latest_receipt)) ? $responseByAppleBody->latest_receipt : null,
                 $responseByAppleBody->latest_receipt_info,
                 $responseByAppleBody->pending_renewal_info[0]
             );
