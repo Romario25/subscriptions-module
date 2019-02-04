@@ -34,7 +34,8 @@ class SaveSubscriptionService
             ->whereHas('application', function($query) use ($appId) {
                 $query->where('app_id', $appId);
             })
-            ->where('original_transaction_id', $subscriptionDto->originalTransactionId)->first();
+            //->where('original_transaction_id', $subscriptionDto->originalTransactionId)
+            ->first();
 
         if (is_null($subscription)) {
 
