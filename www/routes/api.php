@@ -20,3 +20,6 @@ Route::post('/verified-receipt', ['uses' => 'API\SubscriptionsController@verifie
 Route::post('/set-appsflyer-data', ['uses' => 'API\SetDataController@appsflyer']);
 
 Route::post("/application/add", ['uses' => 'API\ApplicationController@add']);
+
+
+Route::get('/test', ['uses' => 'API\TestController@index']);

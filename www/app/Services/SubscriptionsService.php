@@ -64,7 +64,7 @@ class SubscriptionsService
         $startDate = Carbon::now()->startOfDay()->timestamp;
 
 
-        if (count($diffTransaction) == 1) {
+        if (count($diffTransaction) == 1 && $subscription->start_date > $startDate * 1000) {
 
             $event = $this->getEventBySubscription($subscription);
 
@@ -92,31 +92,32 @@ class SubscriptionsService
 
                 $endDiffTransaction = end($diffTransaction);
 
-                $transactionHistory = SubscriptionHistory::where('transaction_id', $endDiffTransaction->transaction_id)
-                    ->first();
+                if ($endDiffTransaction->start_date > $startDate * 1000) {
+                    $transactionHistory = SubscriptionHistory::where('transaction_id', $endDiffTransaction->transaction_id)
+                        ->first();
 
-                $event = $this->getEventBySubscription($transactionHistory);
+                    $event = $this->getEventBySubscription($transactionHistory);
 
-                AppslyerService::sendEvent(
-                    $subscription->application->appsflyer_dev_key,
-                    $event['event_name'],
-                    $subscription->application->app_id,
-                    $idfa,
-                    $subscription->application->bundle_id,
-                    $deviceId,
-                    $event['price']);
-
-                if ($event['price'] > 0) {
                     AppslyerService::sendEvent(
                         $subscription->application->appsflyer_dev_key,
-                        'af_purchase',
+                        $event['event_name'],
                         $subscription->application->app_id,
                         $idfa,
                         $subscription->application->bundle_id,
                         $deviceId,
                         $event['price']);
-                }
 
+                    if ($event['price'] > 0) {
+                        AppslyerService::sendEvent(
+                            $subscription->application->appsflyer_dev_key,
+                            'af_purchase',
+                            $subscription->application->app_id,
+                            $idfa,
+                            $subscription->application->bundle_id,
+                            $deviceId,
+                            $event['price']);
+                    }
+                }
 
             }
 
@@ -247,7 +248,7 @@ class SubscriptionsService
                 $event =  $prefix . 'start_trial';
             break;
             case Subscription::TYPE_INITIAL_BUY:
-                $event = $prefix . $key . '_1';
+                $event = $prefix . $applicationProduct['event_name'] . '_1';
                 $price = $applicationProduct['price'];
             break;
             case Subscription::TYPE_RENEWAL:
@@ -283,9 +284,9 @@ class SubscriptionsService
         $now = Carbon::now()->timestamp;
       //  \Log::info('NOW : ' . $now);
         $subscriptions = Subscription::where('end_date', '<', $now * 1000)
-            //->where('type', Subscription::TYPE_TRIAL)
-            ->where('type', Subscription::TYPE_RENEWAL)
-            ->orWhere('type', Subscription::TYPE_INITIAL_BUY)->get();
+            ->whereIn('type', [Subscription::TYPE_TRIAL, Subscription::TYPE_INITIAL_BUY, Subscription::TYPE_RENEWAL])
+            ->get();
+
         //dd($subscriptions);
         foreach ($subscriptions as $subscription) {
 
