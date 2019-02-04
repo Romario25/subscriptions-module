@@ -283,7 +283,7 @@ class SubscriptionsService
         $now = Carbon::now()->timestamp;
       //  \Log::info('NOW : ' . $now);
         $subscriptions = Subscription::where('end_date', '<', $now * 1000)
-            ->where('type', Subscription::TYPE_TRIAL)
+            //->where('type', Subscription::TYPE_TRIAL)
             ->where('type', Subscription::TYPE_RENEWAL)
             ->orWhere('type', Subscription::TYPE_INITIAL_BUY)->get();
         //dd($subscriptions);
