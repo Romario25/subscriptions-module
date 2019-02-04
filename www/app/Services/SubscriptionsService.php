@@ -66,7 +66,9 @@ class SubscriptionsService
         $startDate = Carbon::now()->startOfDay()->timestamp;
 
 
-        if (count($diffTransaction) == 1 && isset($subscription->start_date) && $subscription->start_date > $startDate * 1000) {
+        \Log::info('diff transaction', ['data' => $diffTransaction]);
+
+        if (count($diffTransaction) == 1  && $subscription->start_date > $startDate * 1000) {
 
             $event = $this->getEventBySubscription($subscription);
 
@@ -134,7 +136,7 @@ class SubscriptionsService
             "data" => $type
         ]);
 
-        if ( count($diffTransaction) == 0 && $type == Subscription::TYPE_CANCEL ) {
+        if (  $type == Subscription::TYPE_CANCEL ) {
 
 
             SaveSubscriptionService::createCancelReceiptHistory($subscription);
