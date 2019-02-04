@@ -26,18 +26,22 @@ class SubscriptionsController extends Controller
 
         $verifiedReceived = $subscriptionsService->verifyReceipt($responseByApple);
 
-        $responseByAppleBody = json_decode($responseByApple['body']);
 
-        $environment = $responseByAppleBody->environment;
+        if ($verifiedReceived['status'] == 'OK') {
+            $responseByAppleBody = json_decode($responseByApple['body']);
 
-        $subscriptionsService->handlerReceipt(
-            $request->input('app_id'),
-            $request->input('udid'),
-            $environment,
-            $responseByAppleBody->latest_receipt,
-            $responseByAppleBody->latest_receipt_info,
-            $responseByAppleBody->pending_renewal_info[0]
-        );
+            $environment = $responseByAppleBody->environment;
+
+            $subscriptionsService->handlerReceipt(
+                $request->input('app_id'),
+                $request->input('udid'),
+                $environment,
+                $responseByAppleBody->latest_receipt,
+                $responseByAppleBody->latest_receipt_info,
+                $responseByAppleBody->pending_renewal_info[0]
+            );
+        }
+
 
         return $verifiedReceived;
 
