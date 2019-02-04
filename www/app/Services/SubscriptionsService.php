@@ -58,8 +58,7 @@ class SubscriptionsService
         $idfa = $this->applicationService->getIdfa($subscription->application->id, $subscription->device_id);
 
         $startDate = Carbon::now()->startOfDay()->timestamp;
-
-
+        
 
         if (count($diffTransaction) == 1) {
 
@@ -126,14 +125,14 @@ class SubscriptionsService
 
             $event = $this->getEventBySubscription($subscription);
 
-            AppslyerService::sendEvent(
-                $subscription->application->appsflyer_dev_key,
-                $event['event_name'],
-                $subscription->application->app_id,
-                $idfa,
-                $subscription->application->bundle_id,
-                $deviceId,
-                $event['price']);
+//            AppslyerService::sendEvent(
+//                $subscription->application->appsflyer_dev_key,
+//                $event['event_name'],
+//                $subscription->application->app_id,
+//                $idfa,
+//                $subscription->application->bundle_id,
+//                $deviceId,
+//                $event['price']);
         }
 
     }
