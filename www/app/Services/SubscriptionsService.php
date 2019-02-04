@@ -47,7 +47,7 @@ class SubscriptionsService
             $environment,
             $type,
             $endLatestReceiptInfo->purchase_date_ms,
-            $endLatestReceiptInfo->expires_date_ms,
+            (isset($endLatestReceiptInfo->expires_date_ms)) ? $endLatestReceiptInfo->expires_date_ms : null,
             $latestReceipt
         );
 
