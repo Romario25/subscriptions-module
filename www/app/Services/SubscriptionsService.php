@@ -66,7 +66,7 @@ class SubscriptionsService
         $startDate = Carbon::now()->startOfDay()->timestamp;
 
 
-        \Log::info('diff transaction', ['data' => $diffTransaction]);
+//        \Log::info('diff transaction', ['data' => $diffTransaction]);
 
         if (count($diffTransaction) == 1  && $subscription->start_date > $startDate * 1000) {
 
