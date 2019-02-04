@@ -35,7 +35,7 @@ class AppslyerService
                 'af_revenue' => (string) $price
             ];
         }
-        
+
 
         $body['eventValue'] = json_encode($eventValue);
 

@@ -222,6 +222,8 @@ class SubscriptionsService
             ->get()->keyBy('product_name')->toArray();
 
 
+
+
         $subscriptionType = $subscription->type;
 
         $prefix = 'test_';
@@ -244,6 +246,15 @@ class SubscriptionsService
                 $count = SubscriptionHistory::where('subscription_id', $subscription->id)
                     ->where('type', Subscription::TYPE_RENEWAL)->count();
                 $event = $prefix . $key . '_' . $count;
+
+                \Log::info('EVENT DURATION ', [
+                   'data' =>  $eventDuration
+                ]);
+
+                \Log::info('EVENT DURATION KEY', [
+                    'data' =>  $key
+                ]);
+
                 $price = $eventDuration[$key]['price'];
             break;
             case Subscription::TYPE_CANCEL:
