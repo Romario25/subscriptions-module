@@ -138,19 +138,24 @@ class SubscriptionsService
 
         if ( count($diffTransaction) == 0 && $type == Subscription::TYPE_CANCEL ) {
 
+            $latestRecordSubscriptionHistory = SubscriptionHistory::where('subscription_id', $subscription->id)
+                ->orderBy('created_at', 'DESC')->limit(1)->first();
 
-            SaveSubscriptionService::createCancelReceiptHistory($subscription);
+            if ($latestRecordSubscriptionHistory != Subscription::TYPE_CANCEL) {
+                SaveSubscriptionService::createCancelReceiptHistory($subscription, $latestRecordSubscriptionHistory);
 
-            $event = $this->getEventBySubscription($subscription);
+                $event = $this->getEventBySubscription($subscription);
 
-            AppslyerService::sendEvent(
-                $subscription->application->appsflyer_dev_key,
-                $event['event_name'],
-                $subscription->application->app_id,
-                $idfa,
-                $subscription->application->bundle_id,
-                $deviceId,
-                $event['price']);
+                AppslyerService::sendEvent(
+                    $subscription->application->appsflyer_dev_key,
+                    $event['event_name'],
+                    $subscription->application->app_id,
+                    $idfa,
+                    $subscription->application->bundle_id,
+                    $deviceId,
+                    $event['price']);
+            }
+            
         }
 
     }

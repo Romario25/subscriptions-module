@@ -162,11 +162,8 @@ class SaveSubscriptionService
     }
 
 
-    public static function createCancelReceiptHistory($subscription)
+    public static function createCancelReceiptHistory($subscription, $latestRecordSubscriptionHistory)
     {
-
-        $latestRecordSubscriptionHistory = SubscriptionHistory::where('subscription_id', $subscription->id)
-            ->orderBy('created_at', 'DESC')->limit(1)->first();
 
 
         $subscriptionHistoryDTO = new SubscriptionHistoryDto(
