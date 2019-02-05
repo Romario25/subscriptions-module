@@ -26,4 +26,15 @@ class SetDataController extends Controller
             'status' => 'OK'
         ];
     }
+
+    public function facebook(Request $request)
+    {
+        \Log::info('SET DATA FACEBOOK', [
+            'data' => $request->all()
+        ]);
+
+        return [
+            'status' => 'OK'
+        ];
+    }
 }

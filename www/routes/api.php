@@ -19,6 +19,8 @@ Route::post('/verified-receipt', ['uses' => 'API\SubscriptionsController@verifie
 
 Route::post('/set-appsflyer-data', ['uses' => 'API\SetDataController@appsflyer']);
 
+Route::post('/set-facebook-data', ['uses' => 'API\SetDataController@facebook']);
+
 Route::post("/application/add", ['uses' => 'API\ApplicationController@add']);
 
 
