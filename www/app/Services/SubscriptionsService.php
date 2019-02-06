@@ -34,13 +34,16 @@ class SubscriptionsService
     /**
      * @param $appId
      * @param $deviceId
+     * @param $screen
      * @param $environment
      * @param $latestReceipt
      * @param array $latestReceiptInfo
      * @param object $pendingRenewalInfo
      */
-    public function handlerReceipt($appId, $deviceId, $environment, $latestReceipt, $latestReceiptInfo, $pendingRenewalInfo)
+    public function handlerReceipt($appId, $deviceId, $screen, $environment, $latestReceipt, $latestReceiptInfo, $pendingRenewalInfo)
     {
+
+
 
         $endLatestReceiptInfo = end($latestReceiptInfo);
 
@@ -51,6 +54,7 @@ class SubscriptionsService
         $subscriptionDTO = new SubscriptionDto(
             $appId,
             $deviceId,
+            $screen,
             $endLatestReceiptInfo->original_transaction_id,
             $endLatestReceiptInfo->product_id,
             $environment,
@@ -268,8 +272,6 @@ class SubscriptionsService
 
         $prefix = '';
 
-        //$prefix = 'test_';
-
         $event = '';
 
         $keyEventDuration = array_keys($eventDuration);
@@ -278,7 +280,9 @@ class SubscriptionsService
 
         $applicationProduct = $eventDuration[$keyEventDuration[$keySearch]];
 
-        $price =0;
+        $price = 0;
+
+        $screen = '';
 
         switch ($subscriptionType) {
             case Subscription::TYPE_TRIAL:
@@ -308,7 +312,8 @@ class SubscriptionsService
 
         return [
             'event_name' => $event,
-            'price' => $price
+            'price' => $price,
+            'screen' => $screen
         ];
     }
 
@@ -344,6 +349,7 @@ class SubscriptionsService
             $this->handlerReceipt(
                 $subscription->application->app_id,
                 $subscription->device_id,
+                $subscription->screen_trial,
                 $environment,
                 $responseByAppleBody->latest_receipt,
                 $responseByAppleBody->latest_receipt_info,

@@ -13,16 +13,13 @@ class SubscriptionsController extends Controller
     public function verifiedReceipt(VerifyReceiptRequest $request, SubscriptionsService $subscriptionsService)
     {
 
-     //   dd($request->all());
-
-//        \Log::info('VERIFIED RECEIPT ', [
-//            'data' => $request->all()
-//        ]);
 
         $responseByApple = $subscriptionsService->getResponseAppleReceipt(
             $request->input('app_id'),
             $request->input('receipt-data')
         );
+
+
 
         $verifiedReceived = $subscriptionsService->verifyReceipt($responseByApple);
 
@@ -35,6 +32,7 @@ class SubscriptionsController extends Controller
             $subscriptionsService->handlerReceipt(
                 $request->input('app_id'),
                 $request->input('udid'),
+                $request->input('screen'),
                 $environment,
                 (isset($responseByAppleBody->latest_receipt)) ? $responseByAppleBody->latest_receipt : null,
                 $responseByAppleBody->latest_receipt_info,

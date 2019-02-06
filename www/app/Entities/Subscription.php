@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property integer $start_date
  * @property integer $end_date
  * @property string $latest_receipt
+ * @property string $screen_trial
  */
 class Subscription extends Model
 {

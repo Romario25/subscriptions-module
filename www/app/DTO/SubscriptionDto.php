@@ -8,6 +8,8 @@ class SubscriptionDto
 
     public $deviceId;
 
+    public $screenTrial;
+
     public $originalTransactionId;
 
     public $productId;
@@ -26,6 +28,7 @@ class SubscriptionDto
      * SubscriptionDto constructor.
      * @param $appId
      * @param $deviceId
+     * @param $screenTrial
      * @param $originalTransactionId
      * @param $productId
      * @param $environment
@@ -34,10 +37,11 @@ class SubscriptionDto
      * @param $endDate
      * @param $latestReceipt
      */
-    public function __construct($appId, $deviceId, $originalTransactionId, $productId, $environment, $type, $startDate, $endDate, $latestReceipt)
+    public function __construct($appId, $deviceId, $screenTrial, $originalTransactionId, $productId, $environment, $type, $startDate, $endDate, $latestReceipt)
     {
         $this->appId = $appId;
         $this->deviceId = $deviceId;
+
         $this->originalTransactionId = $originalTransactionId;
         $this->productId = $productId;
         $this->environment = $environment;
@@ -45,6 +49,7 @@ class SubscriptionDto
         $this->startDate = $startDate;
         $this->endDate = $endDate;
         $this->latestReceipt = $latestReceipt;
+        $this->screenTrial = $screenTrial;
     }
 
 

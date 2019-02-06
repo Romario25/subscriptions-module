@@ -25,7 +25,6 @@ class SaveSubscriptionService
     public static function saveSubscription(SubscriptionDto $subscriptionDto)
     {
 
-
         $appId = $subscriptionDto->appId;
 
         /** @var Subscription $subscription */
@@ -45,6 +44,7 @@ class SaveSubscriptionService
 
 
 
+
             $subscription = Subscription::create([
                 'id' => Str::uuid(),
                 'application_id' => $application->id,
@@ -55,7 +55,8 @@ class SaveSubscriptionService
                 'type' => $subscriptionDto->type,
                 'start_date' => $subscriptionDto->startDate,
                 'end_date' => $subscriptionDto->endDate,
-                'latest_receipt' => $subscriptionDto->latestReceipt
+                'latest_receipt' => $subscriptionDto->latestReceipt,
+                'screen_trial' => $subscriptionDto->screenTrial
             ]);
         } else {
             $subscription->update([
@@ -66,7 +67,8 @@ class SaveSubscriptionService
                 'type' => $subscriptionDto->type,
                 'start_date' => $subscriptionDto->startDate,
                 'end_date' => $subscriptionDto->endDate,
-                'latest_receipt' => $subscriptionDto->latestReceipt
+                'latest_receipt' => $subscriptionDto->latestReceipt,
+                'screen_trial' => $subscriptionDto->screenTrial
             ]);
         }
 
