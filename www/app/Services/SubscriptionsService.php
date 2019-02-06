@@ -63,7 +63,7 @@ class SubscriptionsService
         $startDate = Carbon::now()->startOfDay()->timestamp;
 
 
-//        \Log::info('diff transaction', ['data' => $diffTransaction]);
+
 
         if (count($diffTransaction) == 1  && $subscription->start_date > $startDate * 1000) {
 
@@ -324,6 +324,9 @@ class SubscriptionsService
             ->whereIn('type', [Subscription::TYPE_TRIAL, Subscription::TYPE_INITIAL_BUY, Subscription::TYPE_RENEWAL])
             ->get();
 
+        \Log::info('CHECK SUBSCRIPTION', [
+            'data' => $subscriptions
+        ]);
 
         foreach ($subscriptions as $subscription) {
 
