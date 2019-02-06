@@ -315,7 +315,7 @@ class SubscriptionsService
 
     public function checkSubscription()
     {
-        $now = Carbon::now()->timestamp;
+        $now = Carbon::now()->startOfDay()->timestamp;
 
         $environment = 'Production';
       //  \Log::info('NOW : ' . $now);
