@@ -31,6 +31,14 @@ class SubscriptionsService
         HandlerAppleWebhook::handler($data);
     }
 
+    /**
+     * @param $appId
+     * @param $deviceId
+     * @param $environment
+     * @param $latestReceipt
+     * @param array $latestReceiptInfo
+     * @param object $pendingRenewalInfo
+     */
     public function handlerReceipt($appId, $deviceId, $environment, $latestReceipt, $latestReceiptInfo, $pendingRenewalInfo)
     {
 
@@ -81,7 +89,7 @@ class SubscriptionsService
             if ($event['price'] > 0) {
                 AppslyerService::sendEvent(
                     $subscription->application->appsflyer_dev_key,
-                    'test_af_purchase',
+                    'af_purchase',
                     $subscription->application->app_id,
                     $idfa,
                     $subscription->application->bundle_id,
@@ -94,10 +102,8 @@ class SubscriptionsService
                 $endDiffTransaction = end($diffTransaction);
 
 
-
-
-                if (isset($endDiffTransaction->start_date) && $endDiffTransaction->start_date > $startDate * 1000) {
-                    $transactionHistory = SubscriptionHistory::where('transaction_id', $endDiffTransaction->transaction_id)
+                if (isset($endDiffTransaction['start_date']) && $endDiffTransaction['start_date'] > $startDate * 1000) {
+                    $transactionHistory = SubscriptionHistory::where('transaction_id', $endDiffTransaction['transaction_id'])
                         ->first();
 
                     $event = $this->getEventBySubscription($transactionHistory);
@@ -203,11 +209,14 @@ class SubscriptionsService
         return $collect->sortBy('purchase_date_ms')->toArray();
     }
 
+
+    /**
+     * @param object $pendingRenewalInfo
+     * @param array $latestReceiptInfo
+     * @return string
+     */
     private function defineType($pendingRenewalInfo, $latestReceiptInfo)
     {
-
-
-
 
         $receiptInfo = $this->sortLatestReceiptInfo($latestReceiptInfo);
 
@@ -215,14 +224,10 @@ class SubscriptionsService
 
         $countReceiptInfo = count($receiptInfo);
 
-//        \Log::info('pending', ['data' => $pendingRenewalInfo]);
-//        \Log::info('end receipt', ['data' => $endReceiptInfo]);
-//        \Log::info('count receipt', ['data' => $countReceiptInfo]);
 
         if (isset($endReceiptInfo->expires_date_ms) && (isset($pendingRenewalInfo->expiration_intent)) && $pendingRenewalInfo->expiration_intent == 1 ) {
             return Subscription::TYPE_CANCEL;
         }
-
 
 
         if (!isset($endReceiptInfo->expires_date_ms) && (isset($pendingRenewalInfo->expiration_intent)) && $pendingRenewalInfo->expiration_intent == 1) {
@@ -247,13 +252,15 @@ class SubscriptionsService
         return Subscription::TYPE_RENEWAL;
     }
 
+    /**
+     * @param $subscription
+     * @return array
+     */
     public function getEventBySubscription($subscription)
     {
 
         $eventDuration = ApplicationProduct::where('application_id', $subscription->application_id)
             ->get()->keyBy('product_name')->toArray();
-
-
 
 
         $subscriptionType = $subscription->type;
@@ -286,14 +293,6 @@ class SubscriptionsService
                     ->where('type', Subscription::TYPE_RENEWAL)->count();
                 $event = $prefix . $applicationProduct['event_name'] . '_' . $count;
 
-                \Log::info('EVENT DURATION ', [
-                   'data' =>  $eventDuration
-                ]);
-
-                \Log::info('EVENT DURATION KEY', [
-                    'data' =>  $applicationProduct
-                ]);
-
                 $price = $applicationProduct['price'];
             break;
             case Subscription::TYPE_CANCEL:
@@ -315,18 +314,15 @@ class SubscriptionsService
 
     public function checkSubscription()
     {
-        $now = Carbon::now()->startOfDay()->timestamp;
+        $now = Carbon::now()->timestamp;
 
         $environment = 'Production';
-      //  \Log::info('NOW : ' . $now);
-        $subscriptions = Subscription::where('start_date', '>', $now * 1000)
+
+        $subscriptions = Subscription::where('end_date', '<', $now * 1000)
             ->where('environment', $environment)
             ->whereIn('type', [Subscription::TYPE_TRIAL, Subscription::TYPE_INITIAL_BUY, Subscription::TYPE_RENEWAL])
             ->get();
 
-//        \Log::info('CHECK SUBSCRIPTION', [
-//            'data' => $subscriptions
-//        ]);
 
         foreach ($subscriptions as $subscription) {
 

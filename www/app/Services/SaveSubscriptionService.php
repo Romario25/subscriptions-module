@@ -104,6 +104,12 @@ class SaveSubscriptionService
         }
     }
 
+
+    /**
+     * @param array $latestReceiptInfo
+     * @param $subscription
+     * @return array|null
+     */
     public static function checkReceiptHistory(array $latestReceiptInfo, $subscription)
     {
         $collect = collect($latestReceiptInfo)
@@ -118,12 +124,11 @@ class SaveSubscriptionService
             $query->where('device_id', $deviceId);
         })->pluck('transaction_id')->toArray();
 
-
-
         $arrayDiffTransactionId = array_diff($arrayTransactionId, $savedAlreadyTransactionId);
 
 
         if (count($arrayDiffTransactionId) > 0) {
+
             foreach ($arrayDiffTransactionId as $transactionId) {
 
                 $type = Subscription::TYPE_RENEWAL;
