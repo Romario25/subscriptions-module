@@ -311,7 +311,7 @@ class SubscriptionsService
         switch ($subscriptionType) {
             case Subscription::TYPE_TRIAL:
                 $event =  $prefix . 'start_trial';
-                $event_screen = $prefix . 'start_trial_' . $subscription->screen_trial;
+                $event_screen = $prefix . 'start_trial_' . (empty($subscription->screen_trial)) ? 'none' :  $subscription->screen_trial;
             break;
             case Subscription::TYPE_INITIAL_BUY:
                 $event = $prefix . $applicationProduct['event_name'] . '_1';
