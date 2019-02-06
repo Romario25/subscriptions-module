@@ -162,7 +162,7 @@ class SaveSubscriptionService
         }
 
 
-        return null;
+        return [];
 
 
     }
