@@ -144,6 +144,17 @@ class SubscriptionsService
                             $deviceId,
                             $event['price']);
                     }
+
+                    if (!empty($event['event_screen'])) {
+                        AppslyerService::sendEvent(
+                            $subscription->application->appsflyer_dev_key,
+                            $event['event_screen'],
+                            $subscription->application->app_id,
+                            $idfa,
+                            $subscription->application->bundle_id,
+                            $deviceId,
+                            $event['price']);
+                    }
                 }
 
             }
