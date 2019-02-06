@@ -319,7 +319,7 @@ class SubscriptionsService
 
         $environment = 'Production';
       //  \Log::info('NOW : ' . $now);
-        $subscriptions = Subscription::where('start_date', '<', $now * 1000)
+        $subscriptions = Subscription::where('start_date', '>', $now * 1000)
             ->where('environment', $environment)
             ->whereIn('type', [Subscription::TYPE_TRIAL, Subscription::TYPE_INITIAL_BUY, Subscription::TYPE_RENEWAL])
             ->get();
