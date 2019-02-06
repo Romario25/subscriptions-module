@@ -284,7 +284,7 @@ class SubscriptionsService
      * @param $subscription
      * @return array
      */
-    public function getEventBySubscription($subscription)
+    public function getEventBySubscription($subscription) : array
     {
 
         $eventDuration = ApplicationProduct::where('application_id', $subscription->application_id)
