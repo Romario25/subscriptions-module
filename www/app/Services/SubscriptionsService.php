@@ -324,9 +324,9 @@ class SubscriptionsService
             ->whereIn('type', [Subscription::TYPE_TRIAL, Subscription::TYPE_INITIAL_BUY, Subscription::TYPE_RENEWAL])
             ->get();
 
-        \Log::info('CHECK SUBSCRIPTION', [
-            'data' => $subscriptions
-        ]);
+//        \Log::info('CHECK SUBSCRIPTION', [
+//            'data' => $subscriptions
+//        ]);
 
         foreach ($subscriptions as $subscription) {
 
