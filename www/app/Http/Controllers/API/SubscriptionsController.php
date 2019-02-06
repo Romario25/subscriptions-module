@@ -14,9 +14,9 @@ class SubscriptionsController extends Controller
     {
 
 
-        \Log::info('VERIFIED', [
-            'data' => $request->all()
-        ]);
+//        \Log::info('VERIFIED', [
+//            'data' => $request->all()
+//        ]);
 
 
         $responseByApple = $subscriptionsService->getResponseAppleReceipt(
