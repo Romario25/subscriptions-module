@@ -67,7 +67,8 @@ class SaveSubscriptionService
                 'type' => $subscriptionDto->type,
                 'start_date' => $subscriptionDto->startDate,
                 'end_date' => $subscriptionDto->endDate,
-                'latest_receipt' => $subscriptionDto->latestReceipt
+                'latest_receipt' => $subscriptionDto->latestReceipt,
+                'screen_trial' => (is_null($subscriptionDto->screenTrial)) ? $subscription->screen_trial : $subscriptionDto->screenTrial
             ]);
         }
 
