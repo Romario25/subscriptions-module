@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Services\SubscriptionsService;
 use Illuminate\Console\Command;
+use Illuminate\Support\Carbon;
 
 class CheckSubscription extends Command
 {
@@ -36,7 +37,9 @@ class CheckSubscription extends Command
      */
     public function handle(SubscriptionsService $subscriberService)
     {
-          \Log::info('CHECK SUBSCRIPTION');
+          \Log::info('CHECK SUBSCRIPTION', [
+              'data' => Carbon::now()->timestamp * 1000
+          ]);
         $subscriberService->checkSubscription();
     }
 }
