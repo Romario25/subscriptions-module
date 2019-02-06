@@ -100,6 +100,17 @@ class SubscriptionsService
                     $deviceId,
                     $event['price']);
             }
+
+            if (!empty($event['event_screen'])) {
+                AppslyerService::sendEvent(
+                    $subscription->application->appsflyer_dev_key,
+                    $event['event_screen'],
+                    $subscription->application->app_id,
+                    $idfa,
+                    $subscription->application->bundle_id,
+                    $deviceId,
+                    $event['price']);
+            }
         } else {
             if (count($diffTransaction) > 0) {
 
@@ -270,9 +281,9 @@ class SubscriptionsService
         $subscriptionType = $subscription->type;
 
 
-        $prefix = '';
+        $prefix = 'test_';
 
-        $event = '';
+        $event_screen = '';
 
         $keyEventDuration = array_keys($eventDuration);
 
@@ -287,6 +298,7 @@ class SubscriptionsService
         switch ($subscriptionType) {
             case Subscription::TYPE_TRIAL:
                 $event =  $prefix . 'start_trial';
+                $event_screen = $prefix . 'start_trial_' . $subscription->screen_trial;
             break;
             case Subscription::TYPE_INITIAL_BUY:
                 $event = $prefix . $applicationProduct['event_name'] . '_1';
@@ -313,7 +325,7 @@ class SubscriptionsService
         return [
             'event_name' => $event,
             'price' => $price,
-            'screen' => $screen
+            'event_screen' => $event_screen
         ];
     }
 
@@ -321,7 +333,9 @@ class SubscriptionsService
     {
         $now = Carbon::now()->timestamp;
 
-        $environment = 'Production';
+        //$environment = 'Production';
+
+        $environment = 'Sandbox';
 
         $subscriptions = Subscription::where('end_date', '<', $now * 1000)
             ->where('environment', $environment)
