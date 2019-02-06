@@ -311,7 +311,8 @@ class SubscriptionsService
         switch ($subscriptionType) {
             case Subscription::TYPE_TRIAL:
                 $event =  $prefix . 'start_trial';
-                $event_screen = $prefix . 'start_trial_' . (empty($subscription->screen_trial)) ? 'none' :  $subscription->screen_trial;
+                $eventName = (empty($subscription->screen_trial) || is_null($subscription->screen_trial)) ? 'none' :  $subscription->screen_trial;
+                $event_screen = $prefix . 'start_trial_' . $eventName;
             break;
             case Subscription::TYPE_INITIAL_BUY:
                 $event = $prefix . $applicationProduct['event_name'] . '_1';
@@ -346,9 +347,9 @@ class SubscriptionsService
     {
         $now = Carbon::now()->timestamp;
 
-        //$environment = 'Production';
+        $environment = 'Production';
 
-        $environment = 'Sandbox';
+        //$environment = 'Sandbox';
 
         $subscriptions = Subscription::where('end_date', '<', $now * 1000)
             ->where('environment', $environment)
