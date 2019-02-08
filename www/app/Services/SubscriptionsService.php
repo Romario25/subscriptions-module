@@ -85,10 +85,10 @@ class SubscriptionsService
                 $subscription->application->appsflyer_dev_key,
                 $event['event_name'],
                 $subscription->application->app_id,
-                (is_null($applicationDevices)) ? $applicationDevices->idfa : null,
+                (!is_null($applicationDevices)) ? $applicationDevices->idfa : null,
                 $subscription->application->bundle_id,
                 $deviceId,
-                (is_null($applicationDevices)) ? $applicationDevices->appsflyer_unique_id : null,
+                (!is_null($applicationDevices)) ? $applicationDevices->appsflyer_unique_id : null,
                 $event['price']
             );
 
@@ -97,10 +97,10 @@ class SubscriptionsService
                     $subscription->application->appsflyer_dev_key,
                     'af_purchase',
                     $subscription->application->app_id,
-                    (is_null($applicationDevices)) ? $applicationDevices->idfa : null,
+                    (!is_null($applicationDevices)) ? $applicationDevices->idfa : null,
                     $subscription->application->bundle_id,
                     $deviceId,
-                    (is_null($applicationDevices)) ? $applicationDevices->appsflyer_unique_id : null,
+                    (!is_null($applicationDevices)) ? $applicationDevices->appsflyer_unique_id : null,
                     $event['price']);
             }
 
@@ -109,10 +109,10 @@ class SubscriptionsService
                     $subscription->application->appsflyer_dev_key,
                     $event['event_screen'],
                     $subscription->application->app_id,
-                    (is_null($applicationDevices)) ? $applicationDevices->idfa : null,
+                    (!is_null($applicationDevices)) ? $applicationDevices->idfa : null,
                     $subscription->application->bundle_id,
                     $deviceId,
-                    (is_null($applicationDevices)) ? $applicationDevices->appsflyer_unique_id : null,
+                    (!is_null($applicationDevices)) ? $applicationDevices->appsflyer_unique_id : null,
                     $event['price']);
             }
         } else {
@@ -133,10 +133,10 @@ class SubscriptionsService
                         $subscription->application->appsflyer_dev_key,
                         $event['event_name'],
                         $subscription->application->app_id,
-                        (is_null($applicationDevices)) ? $applicationDevices->idfa : null,
+                        (!is_null($applicationDevices)) ? $applicationDevices->idfa : null,
                         $subscription->application->bundle_id,
                         $deviceId,
-                        (is_null($applicationDevices)) ? $applicationDevices->appsflyer_unique_id : null,
+                        (!is_null($applicationDevices)) ? $applicationDevices->appsflyer_unique_id : null,
                         $event['price']);
 
                     if ($event['price'] > 0) {
@@ -144,10 +144,10 @@ class SubscriptionsService
                             $subscription->application->appsflyer_dev_key,
                             'af_purchase',
                             $subscription->application->app_id,
-                            (is_null($applicationDevices)) ? $applicationDevices->idfa : null,
+                            (!is_null($applicationDevices)) ? $applicationDevices->idfa : null,
                             $subscription->application->bundle_id,
                             $deviceId,
-                            (is_null($applicationDevices)) ? $applicationDevices->appsflyer_unique_id : null,
+                            (!is_null($applicationDevices)) ? $applicationDevices->appsflyer_unique_id : null,
                             $event['price']);
                     }
 
@@ -156,10 +156,10 @@ class SubscriptionsService
                             $subscription->application->appsflyer_dev_key,
                             $event['event_screen'],
                             $subscription->application->app_id,
-                            (is_null($applicationDevices)) ? $applicationDevices->idfa : null,
+                            (!is_null($applicationDevices)) ? $applicationDevices->idfa : null,
                             $subscription->application->bundle_id,
                             $deviceId,
-                            (is_null($applicationDevices)) ? $applicationDevices->appsflyer_unique_id : null,
+                            (!is_null($applicationDevices)) ? $applicationDevices->appsflyer_unique_id : null,
                             $event['price']);
                     }
                 }
@@ -190,10 +190,10 @@ class SubscriptionsService
                     $subscription->application->appsflyer_dev_key,
                     $event['event_name'],
                     $subscription->application->app_id,
-                    (is_null($applicationDevices)) ? $applicationDevices->idfa : null,
+                    (!is_null($applicationDevices)) ? $applicationDevices->idfa : null,
                     $subscription->application->bundle_id,
                     $deviceId,
-                    (is_null($applicationDevices)) ? $applicationDevices->appsflyer_unique_id : null,
+                    (!is_null($applicationDevices)) ? $applicationDevices->appsflyer_unique_id : null,
                     $event['price']);
             }
 
@@ -355,9 +355,9 @@ class SubscriptionsService
     {
         $now = Carbon::now()->timestamp;
 
-        $environment = 'Production';
+      //  $environment = 'Production';
 
-      //  $environment = 'Sandbox';
+        $environment = 'Sandbox';
 
         $subscriptions = Subscription::where('end_date', '<', $now * 1000)
             ->where('environment', $environment)
