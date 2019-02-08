@@ -8,13 +8,13 @@ use GuzzleHttp\RequestOptions;
 class AppslyerService
 {
 
-    public static function sendEvent($devToken, $eventName, $appId, $idfa, $bundleId, $deviceId, $price, $currency = 'USD')
+    public static function sendEvent($devToken, $eventName, $appId, $idfa, $bundleId, $deviceId, $appsflyerUniqueId, $price, $currency = 'USD')
     {
 
 
 
         $body = [
-            'appsflyer_id' => $appId,
+            'appsflyer_id' => $appsflyerUniqueId,
             'eventName' => $eventName,
             'af_events_api' => "true",
             'bundle_id' => $bundleId,

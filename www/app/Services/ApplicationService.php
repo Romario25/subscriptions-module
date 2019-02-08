@@ -28,15 +28,11 @@ class ApplicationService
         ]);
     }
 
-    public function getIdfa($applicationId, $deviceId)
+    public function getApplicationDeviceInfo($applicationId, $deviceId)
     {
-        $applicationDevice =  ApplicationDevice::where('application_id', $applicationId)
+        return  ApplicationDevice::where('application_id', $applicationId)
             ->where('device_id', $deviceId)->first();
-
-        if (!is_null($applicationDevice)) {
-            return $applicationDevice->idfa;
-        }
-
-        return null;
     }
+
+
 }

@@ -27,7 +27,8 @@ class SetDataAppsflyerRequest extends FormRequest
             'udid' => 'required|string',
             'appsflyer_id' => 'required|string',
             'idfa' => 'required|string',
-            'bundle_id' => 'required|string'
+            'bundle_id' => 'required|string',
+            'unique_id' => 'required|string'
         ];
     }
 }

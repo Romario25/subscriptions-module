@@ -19,7 +19,8 @@ class SetDataController extends Controller
         $setDataService->saveAppsflyerData(
             $request->input('udid'),
             $request->input('appsflyer_id'),
-            $request->input('idfa')
+            $request->input('idfa'),
+            $request->input('unique_id')
         );
 
         return [

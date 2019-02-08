@@ -24,14 +24,16 @@ class SetDataService
     }
 
 
-    public function saveAppsflyerData($udid, $appId, $idfa)
+    public function saveAppsflyerData($udid, $appId, $idfa, $appsflyerUniqueId)
     {
         $application = $this->applicationService->getApplicationByAppId($appId);
 
         $applicationDevice = $this->applicationDeviceService->getDevice($application->id, $udid);
 
         if (is_null($applicationDevice)) {
-            $this->applicationDeviceService->add($application->id, $udid, $idfa);
+            $this->applicationDeviceService->add($application->id, $udid, $idfa, $appsflyerUniqueId);
+        } else {
+            $this->applicationDeviceService->update( $application->id, $udid, $idfa, $appsflyerUniqueId);
         }
 
     }
