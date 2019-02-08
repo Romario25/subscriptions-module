@@ -19,7 +19,7 @@ class AppslyerService
             'af_events_api' => "true",
             'bundle_id' => $bundleId,
             'eventCurrency' => $currency,
-            'customer_user_id' => $deviceId,
+            'customer_user_id' => $appsflyerUniqueId,
             'device_id' => $deviceId
         ];
 
