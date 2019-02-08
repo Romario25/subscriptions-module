@@ -120,7 +120,7 @@ class SubscriptionsService
 
                 $endDiffTransaction = end($diffTransaction);
 
-                \Log::info('END DIFF TRANSACTION', $endDiffTransaction);
+                \Log::info('END DIFF TRANSACTION', ['data' => $endDiffTransaction]);
 
 
                 if (isset($endDiffTransaction['start_date']) && $endDiffTransaction['start_date'] > $startDate * 1000) {
