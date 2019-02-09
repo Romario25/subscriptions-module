@@ -14,9 +14,9 @@ class SubscriptionsController extends Controller
     {
 
 
-        \Log::info('VERIFIED', [
-            'data' => $request->all()
-        ]);
+//        \Log::info('VERIFIED', [
+//            'data' => $request->all()
+//        ]);
 
 
         $responseByApple = $subscriptionsService->getResponseAppleReceipt(
@@ -34,15 +34,18 @@ class SubscriptionsController extends Controller
 
             $environment = $responseByAppleBody->environment;
 
-            $subscriptionsService->handlerReceipt(
-                $request->input('app_id'),
-                $request->input('udid'),
-                $request->input('screen'),
-                $environment,
-                (isset($responseByAppleBody->latest_receipt)) ? $responseByAppleBody->latest_receipt : null,
-                $responseByAppleBody->latest_receipt_info,
-                $responseByAppleBody->pending_renewal_info[0]
-            );
+            if (isset($responseByAppleBody->latest_receipt_info)) {
+                $subscriptionsService->handlerReceipt(
+                    $request->input('app_id'),
+                    $request->input('udid'),
+                    $request->input('screen'),
+                    $environment,
+                    (isset($responseByAppleBody->latest_receipt)) ? $responseByAppleBody->latest_receipt : null,
+                    $responseByAppleBody->latest_receipt_info,
+                    $responseByAppleBody->pending_renewal_info[0]
+                );
+            }
+
         }
 
 

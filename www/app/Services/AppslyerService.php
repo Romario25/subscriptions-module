@@ -13,6 +13,8 @@ class AppslyerService
 
 
 
+        $appsflyerUniqueId = (is_null($appsflyerUniqueId)) ? $appId : $appsflyerUniqueId;
+
         $body = [
             'appsflyer_id' => $appsflyerUniqueId,
             'eventName' => $eventName,
