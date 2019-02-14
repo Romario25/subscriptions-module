@@ -397,15 +397,18 @@ class SubscriptionsService
 
             $environment = $responseByAppleBody->environment;
 
-            $this->handlerReceipt(
-                $subscription->application->app_id,
-                $subscription->device_id,
-                $subscription->screen_trial,
-                $environment,
-                $responseByAppleBody->latest_receipt,
-                $responseByAppleBody->latest_receipt_info,
-                $responseByAppleBody->pending_renewal_info[0]
-            );
+            if (isset($responseByAppleBody->latest_receipt_info)) {
+                $this->handlerReceipt(
+                    $subscription->application->app_id,
+                    $subscription->device_id,
+                    $subscription->screen_trial,
+                    $environment,
+                    $responseByAppleBody->latest_receipt,
+                    $responseByAppleBody->latest_receipt_info,
+                    $responseByAppleBody->pending_renewal_info[0]
+                );
+            }
+
         }
     }
 
