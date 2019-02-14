@@ -78,7 +78,7 @@ class SubscriptionsService
 
 
 
-        if (count($diffTransaction) == 1  && $subscription->start_date > $startDate * 1000) {
+        if (count($diffTransaction) == 1  && $subscription->start_date < $startDate * 1000) {
 
             $event = $this->getEventBySubscription($subscription);
 
@@ -92,8 +92,6 @@ class SubscriptionsService
                 (!is_null($applicationDevices)) ? $applicationDevices->appsflyer_unique_id : null,
                 $event['price']
             );
-
-            $facebookAppId = $applicationDevices->application->facebook_app_id;
 
             FacebookService::sendEvent($applicationDevices, $event['event_name'], $event['event_name']);
 
