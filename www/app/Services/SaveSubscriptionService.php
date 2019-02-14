@@ -42,10 +42,7 @@ class SaveSubscriptionService
 
             $application = $applicationService->getApplicationByAppId($subscriptionDto->appId);
 
-
-
-
-            $subscription = Subscription::create([
+            Subscription::create([
                 'id' => Str::uuid(),
                 'application_id' => $application->id,
                 'device_id' => $subscriptionDto->deviceId,
@@ -72,7 +69,9 @@ class SaveSubscriptionService
             ]);
         }
 
-        return $subscription;
+        return Subscription::where('device_id', $subscriptionDto->deviceId)
+            ->where('product_id', $subscriptionDto->productId)
+            ->first();
     }
 
 
@@ -112,17 +111,15 @@ class SaveSubscriptionService
      * @param $subscription
      * @return array|null
      */
-    public static function checkReceiptHistory(array $latestReceiptInfo, $subscription)
+    public static function checkReceiptHistory(array $latestReceiptInfo, Subscription $subscription)
     {
+
 
 
 
         $collect = collect($latestReceiptInfo)->keyBy('transaction_id')->toArray();
 
-
-
         $arrayTransactionId = array_keys($collect);
-
 
 
         $deviceId = $subscription->device_id;
@@ -164,9 +161,20 @@ class SaveSubscriptionService
             }
 
 
+            $result = [];
 
-            return collect($latestReceiptInfo)
-                ->whereIn('transaction_id', $arrayDiffTransactionId)->all();
+
+            $collections = collect($latestReceiptInfo)
+                ->whereIn('transaction_id', $arrayDiffTransactionId)->toArray();
+
+
+            foreach ($collections as $collection) {
+                $result[] = (array) $collection;
+            }
+
+
+
+            return $result;
         }
 
 

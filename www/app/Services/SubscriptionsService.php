@@ -67,7 +67,9 @@ class SubscriptionsService
 
         $subscription = SaveSubscriptionService::saveSubscription($subscriptionDTO);
 
+
         $diffTransaction = SaveSubscriptionService::checkReceiptHistory($latestReceiptInfo, $subscription);
+
 
 
         /** @var ApplicationDevice $applicationDevices */
@@ -76,9 +78,8 @@ class SubscriptionsService
         $startDate = Carbon::now()->startOfDay()->timestamp;
 
 
+        if (count($diffTransaction) == 1  && $subscription->start_date < $startDate * 1000) {
 
-
-        if (count($diffTransaction) == 1  /*&& $subscription->start_date < $startDate * 1000*/) {
 
             $event = $this->getEventBySubscription($subscription);
 
@@ -126,6 +127,8 @@ class SubscriptionsService
             if (count($diffTransaction) > 0) {
 
                 $endDiffTransaction = end($diffTransaction);
+
+
 
                 \Log::info('END DIFF TRANSACTION', ['data' => $endDiffTransaction]);
 
