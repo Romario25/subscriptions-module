@@ -117,7 +117,7 @@ class SaveSubscriptionService
 
 
 
-        $collect = collect((array)$latestReceiptInfo)->keyBy('transaction_id')->toArray();
+        $collect = collect($latestReceiptInfo)->keyBy('transaction_id')->toArray();
 
 
         \Log::info("COLLECT", [
@@ -125,6 +125,10 @@ class SaveSubscriptionService
         ]);
 
         $arrayTransactionId = array_keys($collect);
+
+        \Log::info("arrayTransactionId", [
+            'data' => $arrayTransactionId
+        ]);
 
         $deviceId = $subscription->device_id;
 
