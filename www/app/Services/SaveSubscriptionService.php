@@ -164,7 +164,7 @@ class SaveSubscriptionService
             ]);
 
             return collect($latestReceiptInfo)
-                ->whereIn('transaction_id', $arrayDiffTransactionId)->toArray();
+                ->whereIn('transaction_id', $arrayDiffTransactionId)->all()->toArray();
         }
 
 
