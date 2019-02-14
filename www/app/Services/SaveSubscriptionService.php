@@ -119,8 +119,7 @@ class SaveSubscriptionService
             'data' => $latestReceiptInfo
         ]);
 
-        $collect = collect($latestReceiptInfo)
-            ->keyBy('transaction_id')->toArray();
+        $collect = $latestReceiptInfo->keyBy('transaction_id')->toArray();
 
 
         \Log::info("COLLECT", [
