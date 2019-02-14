@@ -133,7 +133,7 @@ class SubscriptionsService
                 \Log::info('END DIFF TRANSACTION', ['data' => $endDiffTransaction]);
 
 
-                if (isset($endDiffTransaction->start_date) && $endDiffTransaction->start_date > $startDate * 1000) {
+                if (isset($endDiffTransaction->purchase_date_ms) && $endDiffTransaction->start_date > $startDate * 1000) {
                     $transactionHistory = SubscriptionHistory::where('transaction_id', $endDiffTransaction->transaction_id)
                         ->first();
 
