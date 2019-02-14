@@ -78,7 +78,7 @@ class SubscriptionsService
 
 
 
-        if (count($diffTransaction) == 1  && $subscription->start_date < $startDate * 1000) {
+        if (count($diffTransaction) == 1  /*&& $subscription->start_date < $startDate * 1000*/) {
 
             $event = $this->getEventBySubscription($subscription);
 
