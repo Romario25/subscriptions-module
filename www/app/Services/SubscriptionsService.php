@@ -5,6 +5,7 @@ namespace App\Services;
 
 
 use App\DTO\SubscriptionDto;
+use App\Entities\ApplicationDevice;
 use App\Entities\ApplicationProduct;
 use App\Entities\Subscription;
 use App\Entities\SubscriptionHistory;
@@ -69,7 +70,7 @@ class SubscriptionsService
         $diffTransaction = SaveSubscriptionService::checkReceiptHistory($latestReceiptInfo, $subscription);
 
 
-
+        /** @var ApplicationDevice $applicationDevices */
         $applicationDevices = $this->applicationService->getApplicationDeviceInfo($subscription->application->id, $subscription->device_id);
 
         $startDate = Carbon::now()->startOfDay()->timestamp;
@@ -92,6 +93,10 @@ class SubscriptionsService
                 $event['price']
             );
 
+            $facebookAppId = $applicationDevices->application->facebook_app_id;
+
+            FacebookService::sendEvent($applicationDevices, $event['event_name'], $event['event_name']);
+
             if ($event['price'] > 0) {
                 AppslyerService::sendEvent(
                     $subscription->application->appsflyer_dev_key,
@@ -102,6 +107,8 @@ class SubscriptionsService
                     $deviceId,
                     (!is_null($applicationDevices)) ? $applicationDevices->appsflyer_unique_id : null,
                     $event['price']);
+
+                FacebookService::sendEvent($applicationDevices, $event['event_name'], $event['event_name']);
             }
 
             if (!empty($event['event_screen'])) {
@@ -114,6 +121,8 @@ class SubscriptionsService
                     $deviceId,
                     (!is_null($applicationDevices)) ? $applicationDevices->appsflyer_unique_id : null,
                     $event['price']);
+
+                FacebookService::sendEvent($applicationDevices, $event['event_name'], $event['event_name']);
             }
         } else {
             if (count($diffTransaction) > 0) {
@@ -139,6 +148,8 @@ class SubscriptionsService
                         (!is_null($applicationDevices)) ? $applicationDevices->appsflyer_unique_id : null,
                         $event['price']);
 
+                    FacebookService::sendEvent($applicationDevices, $event['event_name'], $event['event_name']);
+
                     if ($event['price'] > 0) {
                         AppslyerService::sendEvent(
                             $subscription->application->appsflyer_dev_key,
@@ -149,6 +160,8 @@ class SubscriptionsService
                             $deviceId,
                             (!is_null($applicationDevices)) ? $applicationDevices->appsflyer_unique_id : null,
                             $event['price']);
+
+                        FacebookService::sendEvent($applicationDevices, $event['event_name'], $event['event_name']);
                     }
 
                     if (!empty($event['event_screen'])) {
@@ -161,6 +174,8 @@ class SubscriptionsService
                             $deviceId,
                             (!is_null($applicationDevices)) ? $applicationDevices->appsflyer_unique_id : null,
                             $event['price']);
+
+                        FacebookService::sendEvent($applicationDevices, $event['event_name'], $event['event_name']);
                     }
                 }
 
@@ -302,7 +317,7 @@ class SubscriptionsService
         $subscriptionType = $subscription->type;
 
 
-        $prefix = 'test_';
+        $prefix = '';
 
         $event_screen = '';
 

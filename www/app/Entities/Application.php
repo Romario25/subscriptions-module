@@ -14,6 +14,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property integer send_stat_appsflyer
  * @property integer send_stat_facebook
  * @property string shared_secret
+ * @property string $bundle_id
+ * @property string $facebook_app_id
  */
 class Application extends Model
 {

@@ -18,6 +18,12 @@ class ApplicationService
             ->firstOrFail();
     }
 
+    public function getApplicationByBundleId($bundleId) : ?Application
+    {
+        return Application::where('bundle_id', $bundleId)
+            ->firstOrFail();
+    }
+
     public function add($bundlerId, $appId, $name, $environment)
     {
         return Application::create([

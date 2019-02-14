@@ -37,4 +37,39 @@ class SetDataService
         }
 
     }
+
+    public function saveFacebookData($bundleId, $udid, $bundleVersion, $advertiserId, $advertiserTrackingEnabled, $extinfo, $bundleShortVersion, $applicationTrackingEnabled, $attribution)
+    {
+        $application = $this->applicationService->getApplicationByBundleId($bundleId);
+
+        $applicationDevice = $this->applicationDeviceService->getDevice($application->id, $udid);
+
+        if (is_null($applicationDevice)) {
+
+            $this->applicationDeviceService->addFacebookData(
+                $application->id,
+                $udid,
+                $bundleVersion,
+                $advertiserId,
+                $advertiserTrackingEnabled,
+                $extinfo,
+                $bundleShortVersion,
+                $applicationTrackingEnabled,
+                $attribution
+            );
+
+        } else {
+            $this->applicationDeviceService->updateFacebookData(
+                $application->id,
+                $udid,
+                $bundleVersion,
+                $advertiserId,
+                $advertiserTrackingEnabled,
+                $extinfo,
+                $bundleShortVersion,
+                $applicationTrackingEnabled,
+                $attribution
+            );
+        }
+    }
 }

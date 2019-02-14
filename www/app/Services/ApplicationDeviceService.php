@@ -22,14 +22,51 @@ class ApplicationDeviceService
         ]);
     }
 
-    public function update($application_id, $deviceId, $idfa, $appsflyerUniqueId)
+    public function update($applicationId, $deviceId, $idfa, $appsflyerUniqueId)
     {
 
-        return ApplicationDevice::where('application_id', $application_id)
+        return ApplicationDevice::where('application_id', $applicationId)
             ->where('device_id', $deviceId)
             ->update([
                 'idfa' => $idfa,
                 'appsflyer_unique_id' => $appsflyerUniqueId
+            ]);
+    }
+
+    public function addFacebookData($applicationId, $deviceId, $bundleVersion, $advertiserId, $advertiserTrackingEnabled, $extinfo, $bundleShortVersion, $applicationTrackingEnabled, $attribution)
+    {
+        return ApplicationDevice::create([
+            'application_id' => $applicationId,
+            'device_id' => $deviceId,
+            'bundle_version' => $bundleVersion,
+            'idfa' => $advertiserId,
+            'extinfo' => $extinfo,
+            'bundle_short_version' => $bundleShortVersion,
+            'application_tracking_enabled' => $applicationTrackingEnabled,
+            'advertiser_tracking_enabled' => $advertiserTrackingEnabled,
+            'attribution' => $attribution
+        ]);
+    }
+
+    public function updateFacebookData($applicationId, $deviceId, $bundleVersion, $advertiserId, $advertiserTrackingEnabled, $extinfo, $bundleShortVersion, $applicationTrackingEnabled, $attribution)
+    {
+
+//        $data = ApplicationDevice::where('application_id', $applicationId)
+//            ->where('device_id', $deviceId)->first();
+//
+//        dd($data->extinfo);
+
+
+        return ApplicationDevice::where('application_id', $applicationId)
+            ->where('device_id', $deviceId)
+            ->update([
+                'bundle_version' => $bundleVersion,
+                'idfa' => $advertiserId,
+                'extinfo' => json_encode($extinfo),
+                'bundle_short_version' => $bundleShortVersion,
+                'application_tracking_enabled' => $applicationTrackingEnabled,
+                'advertiser_tracking_enabled' => $advertiserTrackingEnabled,
+                'attribution' => $attribution
             ]);
     }
 
