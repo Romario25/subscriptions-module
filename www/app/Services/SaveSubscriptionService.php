@@ -158,6 +158,11 @@ class SaveSubscriptionService
                 SaveSubscriptionService::saveSubscriptionHistory($subscriptionHistoryDTO);
             }
 
+            \Log::info('COLLECT SHOULD ARRAY', [
+                'data' => collect($latestReceiptInfo)
+                    ->whereIn('transaction_id', $arrayDiffTransactionId)->toArray()
+            ]);
+
             return collect($latestReceiptInfo)
                 ->whereIn('transaction_id', $arrayDiffTransactionId)->toArray();
         }
