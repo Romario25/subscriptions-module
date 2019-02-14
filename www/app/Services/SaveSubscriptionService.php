@@ -118,6 +118,10 @@ class SaveSubscriptionService
             ->keyBy('transaction_id')->toArray();
 
 
+        \Log::info("COLLECT", [
+           'data' => $collect
+        ]);
+
         $arrayTransactionId = array_keys($collect);
 
         $deviceId = $subscription->device_id;
