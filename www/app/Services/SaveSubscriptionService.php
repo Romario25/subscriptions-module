@@ -172,7 +172,9 @@ class SaveSubscriptionService
                 $result[] = (array) $collection;
             }
 
-
+            \Log::info('RESULT ', [
+                'data' => $result
+            ]);
 
             return $result;
         }
