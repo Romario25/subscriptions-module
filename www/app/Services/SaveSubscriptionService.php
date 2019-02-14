@@ -114,6 +114,11 @@ class SaveSubscriptionService
      */
     public static function checkReceiptHistory(array $latestReceiptInfo, $subscription)
     {
+
+        \Log::info("LATEST RECEIPT INFO", [
+            'data' => $latestReceiptInfo
+        ]);
+
         $collect = collect($latestReceiptInfo)
             ->keyBy('transaction_id')->toArray();
 
