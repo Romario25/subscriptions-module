@@ -160,11 +160,11 @@ class SaveSubscriptionService
 
             \Log::info('COLLECT SHOULD ARRAY', [
                 'data' => collect($latestReceiptInfo)
-                    ->whereIn('transaction_id', $arrayDiffTransactionId)->toArray()
+                    ->whereIn('transaction_id', $arrayDiffTransactionId)->all()
             ]);
 
             return collect($latestReceiptInfo)
-                ->whereIn('transaction_id', $arrayDiffTransactionId)->all()->toArray();
+                ->whereIn('transaction_id', $arrayDiffTransactionId)->all();
         }
 
 
