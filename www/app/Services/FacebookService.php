@@ -31,6 +31,9 @@ class FacebookService
             $customEventObj->fb_currency = 'USD';
         }
 
+        array_push($body->custom_events, $customEventObj);
+
+
         $body->udid = $applicationDevice->id;
         $body->bundle_version = $applicationDevice->bundle_version;
         $body->advertiser_id = $applicationDevice->device_id;
