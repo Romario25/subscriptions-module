@@ -129,18 +129,18 @@ class SubscriptionsService
                 $endDiffTransaction = end($diffTransaction);
 
 
-
                 \Log::info('END DIFF TRANSACTION', ['data' => $endDiffTransaction]);
 
-
-                if (isset($endDiffTransaction->purchase_date_ms) && $endDiffTransaction->purchase_date_ms > $startDate * 1000) {
-
+                if (isset($endDiffTransaction['purchase_date_ms']) && $endDiffTransaction['purchase_date_ms'] > $startDate * 1000) {
 
 
-                    $transactionHistory = SubscriptionHistory::where('transaction_id', $endDiffTransaction->transaction_id)
+
+                    $transactionHistory = SubscriptionHistory::where('transaction_id', $endDiffTransaction['transaction_id'])
                         ->first();
 
-                    $event = $this->getEventBySubscription($transactionHistory);
+
+
+                    $event = $this->getEventBySubscription($transactionHistory->subscription);
 
                     AppslyerService::sendEvent(
                         $subscription->application->appsflyer_dev_key,
@@ -214,6 +214,8 @@ class SubscriptionsService
                     $deviceId,
                     (!is_null($applicationDevices)) ? $applicationDevices->appsflyer_unique_id : null,
                     $event['price']);
+
+                FacebookService::sendEvent($applicationDevices, $event['event_name'], $event['event_name']);
             }
 
         }
@@ -311,17 +313,17 @@ class SubscriptionsService
      * @param $subscription
      * @return array
      */
-    public function getEventBySubscription($subscription) : array
+    public function getEventBySubscription(Subscription $subscription) : array
     {
 
         $eventDuration = ApplicationProduct::where('application_id', $subscription->application_id)
-            ->get()->keyBy('product_name')->toArray();
+            ->get()->toArray();
 
 
         $subscriptionType = $subscription->type;
 
 
-        $prefix = '';
+        $prefix = 'test_';
 
         $event_screen = '';
 
