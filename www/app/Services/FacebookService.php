@@ -45,6 +45,7 @@ class FacebookService
         array_push($extInfo, $applicationDevice->extinfo['pkg_info_ver_name']);
         array_push($extInfo, $applicationDevice->extinfo['os_ver']);
         array_push($extInfo, $applicationDevice->extinfo['dev_model_name']);
+        array_push($extInfo, $applicationDevice->extinfo['locale']);
         array_push($extInfo, $applicationDevice->extinfo['dev_timezone_abv']);
         array_push($extInfo, $applicationDevice->extinfo['carrier_name']);
         array_push($extInfo, $applicationDevice->extinfo['screen_width']);
