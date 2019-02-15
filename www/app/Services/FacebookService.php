@@ -27,9 +27,11 @@ class FacebookService
         $customEventObj->_eventName = $eventName;
 
         if (!is_null($eventValue)) {
-            $customEventObj->_valueToSum = $eventValue;
+            $customEventObj->_valueToSum = $eventValue * 1;
             $customEventObj->fb_currency = 'USD';
         }
+
+        \Log::info('VALUE TO SUM : ' . $customEventObj->_valueToSum);
 
         array_push($body->custom_events, $customEventObj);
 
