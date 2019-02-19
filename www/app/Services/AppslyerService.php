@@ -63,6 +63,11 @@ class AppslyerService
             $body = $response->getBody();
 
 
+            \Log::info('APPSFLYER RESPONSE', [
+               'data' => $body->getContents()
+            ]);
+
+
             $phrase = $response->getReasonPhrase();
 
             if ($phrase != 'OK') {
