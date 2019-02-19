@@ -192,7 +192,6 @@ class SubscriptionsService
                             (!is_null($applicationDevices)) ? $applicationDevices->appsflyer_unique_id : null,
                             $event['price']);
 
-                        FacebookService::sendEvent($applicationDevices, 'af_purchase', $event['price']);
                     }
 
                 }
