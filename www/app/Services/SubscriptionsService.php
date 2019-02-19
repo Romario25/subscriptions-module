@@ -89,6 +89,9 @@ class SubscriptionsService
 
             if ($subscription->type == Subscription::TYPE_TRIAL) {
 
+
+                \Log::info('BLOCK_TRIAL_1');
+
                 AppslyerService::sendEvent(
                     $subscription->application->appsflyer_dev_key,
                     $event['event_name'],
@@ -117,6 +120,9 @@ class SubscriptionsService
                 }
 
             } else {
+
+                \Log::info('BLOCK_TRIAL_2');
+
                 if ($event['price'] > 0) {
                     AppslyerService::sendEvent(
                         $subscription->application->appsflyer_dev_key,
@@ -154,7 +160,7 @@ class SubscriptionsService
 
                 if (isset($endDiffTransaction['purchase_date_ms']) && $endDiffTransaction['purchase_date_ms'] > $startDate * 1000) {
 
-
+                    \Log::info('BLOCK_TRIAL_3');
 
                     $transactionHistory = SubscriptionHistory::where('transaction_id', $endDiffTransaction['transaction_id'])
                         ->first();
@@ -202,6 +208,8 @@ class SubscriptionsService
         ]);
 
         if ( count($diffTransaction) == 0 && $type == Subscription::TYPE_CANCEL ) {
+
+            \Log::info('BLOCK_TRIAL_4');
 
             $latestRecordSubscriptionHistory = SubscriptionHistory::where('subscription_id', $subscription->id)
                 ->orderBy('start_date', 'DESC')->limit(1)->first();
