@@ -83,46 +83,65 @@ class SubscriptionsService
 
             $event = $this->getEventBySubscription($subscription);
 
-            AppslyerService::sendEvent(
-                $subscription->application->appsflyer_dev_key,
-                $event['event_name'],
-                $subscription->application->app_id,
-                (!is_null($applicationDevices)) ? $applicationDevices->idfa : null,
-                $subscription->application->bundle_id,
-                $deviceId,
-                (!is_null($applicationDevices)) ? $applicationDevices->appsflyer_unique_id : null,
-                $event['price']
-            );
 
-            FacebookService::sendEvent($applicationDevices, $event['event_name'], $event['event_price']);
 
-            if ($event['price'] > 0) {
+            if ($subscription->type == Subscription::TYPE_TRIAL) {
+
                 AppslyerService::sendEvent(
                     $subscription->application->appsflyer_dev_key,
-                    'af_purchase',
+                    $event['event_name'],
                     $subscription->application->app_id,
                     (!is_null($applicationDevices)) ? $applicationDevices->idfa : null,
                     $subscription->application->bundle_id,
                     $deviceId,
                     (!is_null($applicationDevices)) ? $applicationDevices->appsflyer_unique_id : null,
-                    $event['price']);
+                    $event['price']
+                );
 
-                FacebookService::sendEvent($applicationDevices, $event['event_name'], $event['event_price']);
+                FacebookService::sendEvent($applicationDevices, $event['event_name'], 0);
+
+                if (!empty($event['event_screen'])) {
+                    AppslyerService::sendEvent(
+                        $subscription->application->appsflyer_dev_key,
+                        $event['event_screen'],
+                        $subscription->application->app_id,
+                        (!is_null($applicationDevices)) ? $applicationDevices->idfa : null,
+                        $subscription->application->bundle_id,
+                        $deviceId,
+                        (!is_null($applicationDevices)) ? $applicationDevices->appsflyer_unique_id : null,
+                        $event['price']);
+
+                    FacebookService::sendEvent($applicationDevices, $event['event_screen'], 0);
+                }
+
+            } else {
+                if ($event['price'] > 0) {
+                    AppslyerService::sendEvent(
+                        $subscription->application->appsflyer_dev_key,
+                        'af_purchase',
+                        $subscription->application->app_id,
+                        (!is_null($applicationDevices)) ? $applicationDevices->idfa : null,
+                        $subscription->application->bundle_id,
+                        $deviceId,
+                        (!is_null($applicationDevices)) ? $applicationDevices->appsflyer_unique_id : null,
+                        $event['price']);
+
+                    AppslyerService::sendEvent(
+                        $subscription->application->appsflyer_dev_key,
+                        $event['event_name'],
+                        $subscription->application->app_id,
+                        (!is_null($applicationDevices)) ? $applicationDevices->idfa : null,
+                        $subscription->application->bundle_id,
+                        $deviceId,
+                        (!is_null($applicationDevices)) ? $applicationDevices->appsflyer_unique_id : null,
+                        $event['price']);
+
+                    FacebookService::sendEvent($applicationDevices, $event['event_name'], $event['event_price']);
+                }
             }
 
-            if (!empty($event['event_screen'])) {
-                AppslyerService::sendEvent(
-                    $subscription->application->appsflyer_dev_key,
-                    $event['event_screen'],
-                    $subscription->application->app_id,
-                    (!is_null($applicationDevices)) ? $applicationDevices->idfa : null,
-                    $subscription->application->bundle_id,
-                    $deviceId,
-                    (!is_null($applicationDevices)) ? $applicationDevices->appsflyer_unique_id : null,
-                    $event['price']);
 
-                FacebookService::sendEvent($applicationDevices, $event['event_name'], $event['event_price']);
-            }
+
         } else {
             if (count($diffTransaction) > 0) {
 
