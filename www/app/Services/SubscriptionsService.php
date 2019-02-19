@@ -328,7 +328,7 @@ class SubscriptionsService
 
         if ($countReceiptInfo == 2  && !isset($pendingRenewalInfo->expiration_intent)) {
 
-            if ($receiptInfo[1]->is_trial_period == "true") {
+            if ($receiptInfo[0]->is_trial_period == "true") {
                 return Subscription::TYPE_INITIAL_BUY;
             }
         }
@@ -404,9 +404,9 @@ class SubscriptionsService
     {
         $now = Carbon::now()->timestamp;
 
-        //$environment = 'Production';
+        $environment = 'Production';
 
-        $environment = 'Sandbox';
+       // $environment = 'Sandbox';
 
         $subscriptions = Subscription::where('end_date', '<', $now * 1000)
             ->where('environment', $environment)
