@@ -300,7 +300,7 @@ class SubscriptionsService
         $countReceiptInfo = count($receiptInfo);
 
 
-        if (isset($endReceiptInfo->expires_date_ms) && (isset($pendingRenewalInfo->expiration_intent)) && $pendingRenewalInfo->expiration_intent == 1 ) {
+        if (isset($endReceiptInfo->expires_date_ms) && (isset($pendingRenewalInfo->expiration_intent)) && $pendingRenewalInfo->expiration_intent > 1 ) {
             return Subscription::TYPE_CANCEL;
         }
 
@@ -319,7 +319,7 @@ class SubscriptionsService
 
         if ($countReceiptInfo == 2  && !isset($pendingRenewalInfo->expiration_intent)) {
 
-            if ($receiptInfo[0]->is_trial_period == "true") {
+            if ($receiptInfo[1]->is_trial_period == "true") {
                 return Subscription::TYPE_INITIAL_BUY;
             }
         }
