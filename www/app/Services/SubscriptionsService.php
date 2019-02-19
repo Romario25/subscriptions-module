@@ -84,7 +84,7 @@ class SubscriptionsService
         \Log::info('COUNT DIFF TRANSACTION', ['data' => count($diffTransaction)]);
 
 
-        if (count($diffTransaction) == 1  && $subscription->start_date < $startDate * 1000) {
+        if (count($diffTransaction) == 1  && $diffTransaction[0]['purchase_date_ms'] > $startDate * 1000) {
 
 
             $event = $this->getEventBySubscription($subscription);
