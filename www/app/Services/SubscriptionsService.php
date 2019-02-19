@@ -373,7 +373,8 @@ class SubscriptionsService
             case Subscription::TYPE_CANCEL:
                 $count = SubscriptionHistory::where('subscription_id', $subscription->id)
                     ->where('type', Subscription::TYPE_RENEWAL)->count();
-                $event = $prefix . 'cancel_' . $applicationProduct['event_name'] . '_' . $count;
+                //$event = $prefix . 'cancel_' . $applicationProduct['event_name'] . '_' . $count;
+                $event = 'cancel_' . $applicationProduct['event_name'] . '_' . $count;
             break;
             case Subscription::TYPE_LIFETIME:
                 $price = $applicationProduct['price'];
