@@ -12,6 +12,9 @@ class AppslyerService
     {
 
 
+        \Log::info('APPID', [
+            'data' => $appId
+        ]);
 
         $appsflyerUniqueId = (is_null($appsflyerUniqueId)) ? $appId : $appsflyerUniqueId;
 
