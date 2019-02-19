@@ -151,7 +151,7 @@ class SubscriptionsService
 
 
         } else {
-            if (count($diffTransaction) > 0) {
+            if (count($diffTransaction) > 1) {
 
                 $endDiffTransaction = end($diffTransaction);
 

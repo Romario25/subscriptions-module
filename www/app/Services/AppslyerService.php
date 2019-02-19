@@ -32,14 +32,16 @@ class AppslyerService
 
         $eventValue = [];
 
-        if ($price > 0 && ($eventName == 'test_af_purchase' || $eventName == 'af_purchase')) {
+        if ($price > 0 ) {
             $eventValue = [
                 'af_revenue' => (string) $price
             ];
         }
 
+        if (!empty($eventValue)) {
+            $body['eventValue'] = json_encode($eventValue);
+        }
 
-        $body['eventValue'] = json_encode($eventValue);
 
 
         $client = new Client([
