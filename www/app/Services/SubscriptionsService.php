@@ -293,9 +293,14 @@ class SubscriptionsService
     private function defineType($pendingRenewalInfo, $latestReceiptInfo)
     {
 
+        \Log::info("LATEST RECEIPT INFO SORT", [
+            'data' => $latestReceiptInfo
+        ]);
+
+
         $receiptInfo = $this->sortLatestReceiptInfo($latestReceiptInfo);
 
-        \Log::info("RECEIPT INFO", [
+        \Log::info("RECEIPT INFO SORT", [
            'data' => $receiptInfo
         ]);
 
