@@ -48,7 +48,7 @@ class AppslyerService
 
         try {
 
-            \Log::info('SEND EVENT BODY ', [
+            \Log::info('SEND EVENT APPSFLYER BODY  ', [
                 'data' => $body
             ]);
 

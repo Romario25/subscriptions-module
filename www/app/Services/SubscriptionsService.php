@@ -78,6 +78,8 @@ class SubscriptionsService
         $startDate = Carbon::now()->startOfDay()->timestamp;
 
 
+        \Log::info('SUBSCRIPTION TYPE : ' . $subscription->type);
+
         if (count($diffTransaction) == 1  && $subscription->start_date < $startDate * 1000) {
 
 
@@ -187,19 +189,6 @@ class SubscriptionsService
                         FacebookService::sendEvent($applicationDevices, $event['event_name'], $event['price']);
                     }
 
-                    if (!empty($event['event_screen'])) {
-                        AppslyerService::sendEvent(
-                            $subscription->application->appsflyer_dev_key,
-                            $event['event_screen'],
-                            $subscription->application->app_id,
-                            (!is_null($applicationDevices)) ? $applicationDevices->idfa : null,
-                            $subscription->application->bundle_id,
-                            $deviceId,
-                            (!is_null($applicationDevices)) ? $applicationDevices->appsflyer_unique_id : null,
-                            $event['price']);
-
-                        FacebookService::sendEvent($applicationDevices, $event['event_name'], $event['price']);
-                    }
                 }
 
             }
