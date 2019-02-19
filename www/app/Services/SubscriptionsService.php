@@ -295,6 +295,10 @@ class SubscriptionsService
 
         $receiptInfo = $this->sortLatestReceiptInfo($latestReceiptInfo);
 
+        \Log::info("RECEIPT INFO", [
+           'data' => $receiptInfo
+        ]);
+
         $endReceiptInfo = end($receiptInfo);
 
         $countReceiptInfo = count($receiptInfo);
