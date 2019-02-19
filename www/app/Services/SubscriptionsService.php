@@ -338,7 +338,7 @@ class SubscriptionsService
         $subscriptionType = $subscription->type;
 
 
-        $prefix = 'test_19_02_';
+        $prefix = 't_';
 
         $event_screen = '';
 
