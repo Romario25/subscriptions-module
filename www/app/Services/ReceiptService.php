@@ -34,7 +34,7 @@ class ReceiptService
 
         $body = [
             'receipt-data' => $receiptData,
-            'exlude-old-transactions' => true,
+            'exclude-old-transactions' => true,
             'password' => $shareSecret
 
         ];

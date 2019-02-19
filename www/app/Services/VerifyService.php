@@ -52,7 +52,7 @@ class VerifyService
 
         $body = [
             'receipt-data' => $receiptData,
-            'exlude-old-transactions' => $this->config['exlude-old-transactions'],
+            'exclude-old-transactions' => true,
             'password' => $this->config['password']
 
         ];
