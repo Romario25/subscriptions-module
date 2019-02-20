@@ -309,7 +309,7 @@ class SubscriptionsService
         $countReceiptInfo = count($receiptInfo);
 
 
-        if (isset($endReceiptInfo->expires_date_ms) && (isset($pendingRenewalInfo->expiration_intent)) && $pendingRenewalInfo->expiration_intent > 1 ) {
+        if (isset($endReceiptInfo->expires_date_ms) && (isset($pendingRenewalInfo->expiration_intent)) && $pendingRenewalInfo->expiration_intent >= 1 ) {
             return Subscription::TYPE_CANCEL;
         }
 
