@@ -107,7 +107,7 @@ class SubscriptionsService
                     $event['price']
                 );
 
-                FacebookService::sendEvent($applicationDevices, 'fb_mobile_start_trial', 0);
+                FacebookService::sendEvent($applicationDevices, 'StartTrial', 0);
 
                 if (!empty($event['event_screen'])) {
                     AppslyerService::sendEvent(
@@ -370,7 +370,7 @@ class SubscriptionsService
         switch ($subscriptionType) {
             case Subscription::TYPE_TRIAL:
                 $event =  $prefix . 'start_trial';
-                $event_facebook = 'fb_mobile_start_trial';
+                $event_facebook = 'StartTrial';
                 $eventName = (empty($subscription->screen_trial) || is_null($subscription->screen_trial)) ? 'none' :  $subscription->screen_trial;
                 $event_screen = $prefix . 'start_trial_' . $eventName;
             break;
