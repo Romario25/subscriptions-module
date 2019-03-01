@@ -107,7 +107,7 @@ class SubscriptionsService
                     $event['price']
                 );
 
-                FacebookService::sendEvent($applicationDevices, $event['event_name'], 0);
+                FacebookService::sendEvent($applicationDevices, 'fb_mobile_start_trial', 0);
 
                 if (!empty($event['event_screen'])) {
                     AppslyerService::sendEvent(
@@ -149,6 +149,7 @@ class SubscriptionsService
                         $event['price']);
 
                     FacebookService::sendEvent($applicationDevices, $event['event_name'], $event['price']);
+                    FacebookService::sendEvent($applicationDevices, 'fb_mobile_purchase', $event['price']);
                 }
             }
 
@@ -194,6 +195,8 @@ class SubscriptionsService
                             $deviceId,
                             (!is_null($applicationDevices)) ? $applicationDevices->appsflyer_unique_id : null,
                             $event['price']);
+
+                        FacebookService::sendEvent($applicationDevices, 'fb_mobile_purchase', $event['price']);
 
                     }
 
@@ -367,18 +370,20 @@ class SubscriptionsService
         switch ($subscriptionType) {
             case Subscription::TYPE_TRIAL:
                 $event =  $prefix . 'start_trial';
+                $event_facebook = 'fb_mobile_start_trial';
                 $eventName = (empty($subscription->screen_trial) || is_null($subscription->screen_trial)) ? 'none' :  $subscription->screen_trial;
                 $event_screen = $prefix . 'start_trial_' . $eventName;
             break;
             case Subscription::TYPE_INITIAL_BUY:
                 $event = $prefix . $applicationProduct['event_name'] . '_1';
+                $event_facebook = 'fb_mobile_purchase';
                 $price = $applicationProduct['price'];
             break;
             case Subscription::TYPE_RENEWAL:
                 $count = SubscriptionHistory::where('subscription_id', $subscription->id)
                     ->where('type', Subscription::TYPE_RENEWAL)->count();
                 $event = $prefix . $applicationProduct['event_name'] . '_' . $count;
-
+                $event_facebook = 'fb_mobile_purchase';
                 $price = $applicationProduct['price'];
             break;
             case Subscription::TYPE_CANCEL:
@@ -386,17 +391,20 @@ class SubscriptionsService
                     ->where('type', Subscription::TYPE_RENEWAL)->count();
                 //$event = $prefix . 'cancel_' . $applicationProduct['event_name'] . '_' . $count;
                 $event = 'cancel_' . $applicationProduct['event_name'] . '_' . $count;
+                $event_facebook = 'cancel_' . $applicationProduct['event_name'] . '_' . $count;
             break;
             case Subscription::TYPE_LIFETIME:
                 $price = $applicationProduct['price'];
                 $event = $prefix . $applicationProduct['event_name'];
+                $event_facebook = 'fb_mobile_purchase';
                 break;
         }
 
         return [
             'event_name' => $event,
             'price' => $price,
-            'event_screen' => $event_screen
+            'event_screen' => $event_screen,
+            'event_facebook' => $event_facebook
         ];
     }
 
