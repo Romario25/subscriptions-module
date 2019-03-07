@@ -12,9 +12,9 @@ class SetDataController extends Controller
 {
     public function appsflyer(SetDataAppsflyerRequest $request, SetDataService $setDataService)
     {
-//        \Log::info('SET DATA CONTROLLER', [
-//            'data' => $request->all()
-//        ]);
+        \Log::info('SET DATA CONTROLLER', [
+            'data' => $request->all()
+        ]);
 
 
         $setDataService->saveAppsflyerData(
