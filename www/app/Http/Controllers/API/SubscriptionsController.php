@@ -18,6 +18,8 @@ class SubscriptionsController extends Controller
             'data' => $request->all()
         ]);
 
+        
+
 
         $responseByApple = $subscriptionsService->getResponseAppleReceipt(
             $request->input('app_id'),
@@ -28,6 +30,8 @@ class SubscriptionsController extends Controller
 
         $verifiedReceived = $subscriptionsService->verifyReceipt($responseByApple);
 
+        $res = null;
+
 
         if ($verifiedReceived['status'] == 'OK') {
             $responseByAppleBody = json_decode($responseByApple['body']);
@@ -35,7 +39,7 @@ class SubscriptionsController extends Controller
             $environment = $responseByAppleBody->environment;
 
             if (isset($responseByAppleBody->latest_receipt_info)) {
-                $subscriptionsService->handlerReceipt(
+                $res = $subscriptionsService->handlerReceipt(
                     $request->input('app_id'),
                     $request->input('udid'),
                     $request->input('screen'),
@@ -49,7 +53,7 @@ class SubscriptionsController extends Controller
         }
 
 
-        return $verifiedReceived;
+        return ['data' => $res];
 
         
     }

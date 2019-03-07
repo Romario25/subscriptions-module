@@ -44,13 +44,16 @@ class SubscriptionsService
     public function handlerReceipt($appId, $deviceId, $screen, $environment, $latestReceipt, $latestReceiptInfo, $pendingRenewalInfo)
     {
 
-
+        $exists = 0;
+        $trial = 0;
 
         $endLatestReceiptInfo = end($latestReceiptInfo);
 
         $type = $this->defineType($pendingRenewalInfo, $latestReceiptInfo);
 
-
+        if ($type == Subscription::TYPE_TRIAL) {
+            $trial = 1;
+        }
 
         $subscriptionDTO = new SubscriptionDto(
             $appId,
@@ -64,6 +67,10 @@ class SubscriptionsService
             (isset($endLatestReceiptInfo->expires_date_ms)) ? $endLatestReceiptInfo->expires_date_ms : 0,
             $latestReceipt
         );
+
+        if (!is_null(SaveSubscriptionService::issetSubscription($subscriptionDTO->deviceId, $subscriptionDTO->originalTransactionId))) {
+            $exists = 1;
+        }
 
         $subscription = SaveSubscriptionService::saveSubscription($subscriptionDTO);
 
@@ -240,6 +247,12 @@ class SubscriptionsService
             }
 
         }
+
+        $obj = new \stdClass();
+        $obj->trial = $trial;
+        $obj->exists = $exists;
+
+        return $obj;
 
     }
 
