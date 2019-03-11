@@ -47,6 +47,7 @@ class SubscriptionsService
         $exists = 0;
         $trial = 0;
 
+
         $endLatestReceiptInfo = end($latestReceiptInfo);
 
         $type = $this->defineType($pendingRenewalInfo, $latestReceiptInfo);
@@ -72,6 +73,7 @@ class SubscriptionsService
             $exists = 1;
         }
 
+        /** @var Subscription $subscription */
         $subscription = SaveSubscriptionService::saveSubscription($subscriptionDTO);
 
 
@@ -251,6 +253,10 @@ class SubscriptionsService
         $obj = new \stdClass();
         $obj->trial = $trial;
         $obj->exists = $exists;
+        $obj->is_premium = 0;
+        if ($subscription->isPremium()) {
+            $obj->is_premium = 1;
+        }
 
         return $obj;
 
@@ -465,6 +471,20 @@ class SubscriptionsService
             }
 
         }
+    }
+
+    public function isPremium($appId, $deviceId): bool
+    {
+        /** @var Subscription $subscription */
+        $subscription = Subscription::where('application_id', $appId)
+            ->where('device_id', $deviceId)
+            ->first();
+
+        if (is_null($subscription)) {
+            return false;
+        }
+
+        return $subscription->isPremium();
     }
 
 

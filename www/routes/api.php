@@ -17,6 +17,8 @@ Route::post('/webhook/apple/{applicationID}', ['uses' => 'API\WebhookController@
 
 Route::post('/verified-receipt', ['uses' => 'API\SubscriptionsController@verifiedReceipt']);
 
+Route::post('/is-premium', ['uses' => 'API\SubscriptionsController@getIsPremium']);
+
 Route::post('/set-appsflyer-data', ['uses' => 'API\SetDataController@appsflyer']);
 
 Route::post('/set-facebook-data', ['uses' => 'API\SetDataController@facebook']);

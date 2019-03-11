@@ -3,7 +3,9 @@ namespace App\Http\Controllers\Api;
 
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\IsPremiumRequest;
 use App\Http\Requests\VerifyReceiptRequest;
+use App\Services\ApplicationService;
 use App\Services\SubscriptionsService;
 use Illuminate\Http\Request;
 
@@ -56,6 +58,7 @@ class SubscriptionsController extends Controller
             $obj = new \stdClass();
             $obj->trial = 0;
             $obj->exists = 0;
+            $obj->is_premium = 0;
 
             $res = $obj;
         }
@@ -64,5 +67,21 @@ class SubscriptionsController extends Controller
         return ['data' => $res];
 
         
+    }
+
+    public function getIsPremium(
+        IsPremiumRequest $request,
+        ApplicationService $applicationService,
+        SubscriptionsService $subscriptionsService
+    )
+    {
+        try {
+            $application = $applicationService->getApplicationByBundleId($request->get('bundle_id'));
+
+            return $subscriptionsService->isPremium($application->id, $request->get('device_id'));
+
+        } catch (\Exception $e) {
+            return false;
+        }
     }
 }

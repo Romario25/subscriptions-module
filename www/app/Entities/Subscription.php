@@ -44,4 +44,11 @@ class Subscription extends Model
     {
         return $this->belongsTo(Application::class, 'application_id', 'id');
     }
+
+    public function isPremium()
+    {
+        $arr = [self::TYPE_RENEWAL, self::TYPE_LIFETIME, self::TYPE_INITIAL_BUY, self::TYPE_TRIAL];
+
+        return in_array($this->type, $arr);
+    }
 }
