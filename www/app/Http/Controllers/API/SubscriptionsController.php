@@ -52,6 +52,14 @@ class SubscriptionsController extends Controller
 
         }
 
+        if (is_null($res)) {
+            $obj = new \stdClass();
+            $obj->trial = 0;
+            $obj->exists = 0;
+
+            $res = $obj;
+        }
+
 
         return ['data' => $res];
 
