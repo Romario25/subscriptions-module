@@ -78,10 +78,10 @@ class SubscriptionsController extends Controller
         try {
             $application = $applicationService->getApplicationByBundleId($request->get('bundle_id'));
 
-            return $subscriptionsService->isPremium($application->id, $request->get('device_id'));
+            return ['data' => $subscriptionsService->isPremium($application->id, $request->get('device_id'))];
 
         } catch (\Exception $e) {
-            return false;
+            return ['data' => false];
         }
     }
 }
