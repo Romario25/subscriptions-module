@@ -254,6 +254,7 @@ class SubscriptionsService
         $obj->trial = $trial;
         $obj->exists = $exists;
         $obj->is_premium = 0;
+
         if ($subscription->isPremium()) {
             $obj->is_premium = 1;
         }

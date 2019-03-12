@@ -63,6 +63,8 @@ class SubscriptionsController extends Controller
             $res = $obj;
         }
 
+\Log::info('RESPONSE', ['response' => $res]);
+
 
         return ['data' => $res];
 
