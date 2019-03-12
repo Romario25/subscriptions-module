@@ -32,6 +32,10 @@ class SubscriptionsController extends Controller
 
         $verifiedReceived = $subscriptionsService->verifyReceipt($responseByApple);
 
+        \Log::info('VERIFIED RECEIVED', [
+           'data' => $verifiedReceived
+        ]);
+
         $res = null;
 
 
