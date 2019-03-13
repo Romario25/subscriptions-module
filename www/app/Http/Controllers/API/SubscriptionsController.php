@@ -32,6 +32,17 @@ class SubscriptionsController extends Controller
 
         $verifiedReceived = $subscriptionsService->verifyReceipt($responseByApple);
 
+
+        // костыль для валидации apple
+        if ($verifiedReceived['status'] == 'ERROR') {
+            $responseByApple = $subscriptionsService->getResponseAppleReceipt(
+                $request->input('app_id'),
+                $request->input('receipt-data')
+            );
+
+            $verifiedReceived = $subscriptionsService->verifyReceipt($responseByApple);
+        }
+
         \Log::info('VERIFIED RECEIVED', [
            'data' => $verifiedReceived
         ]);

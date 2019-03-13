@@ -263,14 +263,14 @@ class SubscriptionsService
 
     }
 
-    public function getResponseAppleReceipt($appId, $latestReceipt)
+    public function getResponseAppleReceipt($appId, $latestReceipt, $environment = null)
     {
         $application = $this->applicationService->getApplicationByAppId($appId);
 
 
         return $this->receiptService->sendReceipt(
             $latestReceipt,
-            $application->environment,
+            (is_null($environment)) ? $application->environment: $environment,
             $application->shared_secret
         );
     }
