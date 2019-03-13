@@ -31,9 +31,9 @@ class SetDataController extends Controller
 
     public function facebook(SetDataFacebookRequest $request, SetDataService $setDataService)
     {
-//        \Log::info('SET DATA FACEBOOK', [
-//            'data' => $request->all()
-//        ]);
+        \Log::info('SET DATA FACEBOOK', [
+            'data' => $request->all()
+        ]);
 
 
         $setDataService->saveFacebookData(

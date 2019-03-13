@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
  * @package Romario25\Subscriptions\Entities
  *
  * @property string $id
+ * @property integer $application_id
  * @property integer $user_id
  * @property string $device_id
  * @property string $product_id
