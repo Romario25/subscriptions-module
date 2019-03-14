@@ -39,7 +39,7 @@ class SubscriptionsController extends Controller
         ]);
 
         // костыль для валидации apple
-        if ($verifiedReceived.status == 'ERROR') {
+        if ($verifiedReceived['status'] == 'ERROR') {
 
             \Log::info("ERROR FROM APPLE");
 
