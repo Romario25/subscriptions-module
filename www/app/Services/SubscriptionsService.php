@@ -270,7 +270,7 @@ class SubscriptionsService
 
         return $this->receiptService->sendReceipt(
             $latestReceipt,
-            (is_null($environment)) ? $application->environment: $environment,
+            (is_null($environment)) ? $application->environment : $environment,
             $application->shared_secret
         );
     }

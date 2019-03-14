@@ -2,6 +2,7 @@
 namespace App\Http\Controllers\Api;
 
 
+use App\Entities\Application;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\IsPremiumRequest;
 use App\Http\Requests\VerifyReceiptRequest;
@@ -46,7 +47,7 @@ class SubscriptionsController extends Controller
             $responseByApple = $subscriptionsService->getResponseAppleReceipt(
                 $request->input('app_id'),
                 $request->input('receipt-data'),
-                'prod'
+                Application::ENV_SANDBOX
             );
 
             $verifiedReceived = $subscriptionsService->verifyReceipt($responseByApple);
