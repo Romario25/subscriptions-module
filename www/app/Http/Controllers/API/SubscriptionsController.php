@@ -17,32 +17,15 @@ class SubscriptionsController extends Controller
     {
 
 
-        \Log::info('VERIFIED', [
-            'data' => $request->all()
-        ]);
-
-        
-
-
         $responseByApple = $subscriptionsService->getResponseAppleReceipt(
             $request->input('app_id'),
             $request->input('receipt-data')
         );
 
-
-
         $verifiedReceived = $subscriptionsService->verifyReceipt($responseByApple);
-
-
-
-        \Log::info('VERIFIED RECEIPT', [
-            'data' => $verifiedReceived
-        ]);
 
         // костыль для валидации apple
         if ($verifiedReceived['status'] == 'ERROR') {
-
-            \Log::info("ERROR FROM APPLE");
 
             $responseByApple = $subscriptionsService->getResponseAppleReceipt(
                 $request->input('app_id'),
@@ -53,9 +36,7 @@ class SubscriptionsController extends Controller
             $verifiedReceived = $subscriptionsService->verifyReceipt($responseByApple);
         }
 
-        \Log::info('VERIFIED RECEIVED', [
-           'data' => $verifiedReceived
-        ]);
+
 
         $res = null;
 
