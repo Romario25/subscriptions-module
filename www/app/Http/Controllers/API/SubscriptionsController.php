@@ -32,7 +32,7 @@ class SubscriptionsController extends Controller
 
         $verifiedReceived = $subscriptionsService->verifyReceipt($responseByApple);
 
-        
+
 
         \Log::info('VERIFIED RECEIPT', [
             'data' => $verifiedReceived
@@ -45,7 +45,8 @@ class SubscriptionsController extends Controller
 
             $responseByApple = $subscriptionsService->getResponseAppleReceipt(
                 $request->input('app_id'),
-                $request->input('receipt-data')
+                $request->input('receipt-data'),
+                'prod'
             );
 
             $verifiedReceived = $subscriptionsService->verifyReceipt($responseByApple);
