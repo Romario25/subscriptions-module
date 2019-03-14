@@ -32,12 +32,14 @@ class SubscriptionsController extends Controller
 
         $verifiedReceived = $subscriptionsService->verifyReceipt($responseByApple);
 
+        dd($verifiedReceived);
+
         \Log::info('VERIFIED RECEIPT', [
             'data' => $verifiedReceived
         ]);
 
         // костыль для валидации apple
-        if ($verifiedReceived['status'] == 'ERROR') {
+        if ($verifiedReceived.status == 'ERROR') {
 
             \Log::info("ERROR FROM APPLE");
 
