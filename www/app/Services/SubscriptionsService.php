@@ -437,7 +437,7 @@ class SubscriptionsService
         $environment = 'Sandbox';
 
         $subscriptions = Subscription::where('end_date', '<', $now * 1000)
-            ->where('environment', $environment)
+            //->where('environment', $environment)
             ->whereIn('type', [Subscription::TYPE_TRIAL, Subscription::TYPE_INITIAL_BUY, Subscription::TYPE_RENEWAL])
             ->get();
 
