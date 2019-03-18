@@ -84,7 +84,23 @@ class SubscriptionsController extends Controller
     )
     {
         try {
+
+            \Log::info('BUNDLE_ID', [
+                'data' => $request->get('bundle_id')
+            ]);
+
+            \Log::info('DEVICE_ID', [
+                'data' => $request->get('bundle_id')
+            ]);
+
+
+
             $application = $applicationService->getApplicationByBundleId($request->get('bundle_id'));
+
+
+            \Log::info('APPLICATION', [
+                'data' => $application
+            ]);
 
             \Log::info('IS PREMIUM', [
                 'data' => $subscriptionsService->isPremium($application->id, $request->get('device_id'))
