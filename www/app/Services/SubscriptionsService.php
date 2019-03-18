@@ -434,7 +434,7 @@ class SubscriptionsService
 
        // $environment = 'Production';
 
-        $environment = 'Sandbox';
+      //  $environment = 'Sandbox';
 
         $subscriptions = Subscription::where('end_date', '<', $now * 1000)
             //->where('environment', $environment)
@@ -447,6 +447,8 @@ class SubscriptionsService
             /** @var Subscription $subscription */
 
             \Log::info('SUBCRIPTION ID : ' . $subscription->id);
+
+            \Log::info('SUBCRIPTION ENV : ' . $subscription->environment);
 
             $responseByApple = $this->getResponseAppleReceipt(
                 $subscription->application->app_id,

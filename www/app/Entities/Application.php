@@ -20,9 +20,9 @@ use Illuminate\Database\Eloquent\Model;
 class Application extends Model
 {
 
-    const ENV_SANDBOX = 'sandbox';
+    const ENV_SANDBOX = 'Sandbox';
 
-    const ENV_PROD = 'prod';
+    const ENV_PROD = 'Production';
 
 
     public $guarded = [];
