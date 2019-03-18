@@ -450,12 +450,15 @@ class SubscriptionsService
 
             $responseByApple = $this->getResponseAppleReceipt(
                 $subscription->application->app_id,
-                $subscription->latest_receipt
+                $subscription->latest_receipt,
+                $subscription->environment
             );
 
             $responseByAppleBody = json_decode($responseByApple['body']);
 
-
+            \Log::info('RESPONSE BY APPLE BODY', [
+               'data' => $responseByApple
+            ]);
 
             $environment = $responseByAppleBody->environment;
 
