@@ -90,7 +90,7 @@ class SubscriptionsController extends Controller
             ]);
 
             \Log::info('DEVICE_ID', [
-                'data' => $request->get('bundle_id')
+                'data' => $request->get('device_id')
             ]);
 
 
