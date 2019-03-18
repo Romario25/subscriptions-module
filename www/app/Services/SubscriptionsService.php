@@ -113,7 +113,7 @@ class SubscriptionsService
                     $subscription->application->bundle_id,
                     $deviceId,
                     (!is_null($applicationDevices)) ? $applicationDevices->appsflyer_unique_id : null,
-                    $event['price']
+                    0
                 );
 
                 FacebookService::sendEvent($applicationDevices, 'StartTrial', 0);
@@ -127,7 +127,7 @@ class SubscriptionsService
                         $subscription->application->bundle_id,
                         $deviceId,
                         (!is_null($applicationDevices)) ? $applicationDevices->appsflyer_unique_id : null,
-                        $event['price']);
+                        0);
 
                     FacebookService::sendEvent($applicationDevices, $event['event_screen'], 0);
                 }
@@ -155,9 +155,9 @@ class SubscriptionsService
                         $subscription->application->bundle_id,
                         $deviceId,
                         (!is_null($applicationDevices)) ? $applicationDevices->appsflyer_unique_id : null,
-                        $event['price']);
+                        0);
 
-                    FacebookService::sendEvent($applicationDevices, $event['event_name'], $event['price']);
+                    FacebookService::sendEvent($applicationDevices, $event['event_name'], 0);
                     FacebookService::sendEvent($applicationDevices, 'fb_mobile_purchase', $event['price']);
                 }
             }
@@ -190,9 +190,9 @@ class SubscriptionsService
                         $subscription->application->bundle_id,
                         $deviceId,
                         (!is_null($applicationDevices)) ? $applicationDevices->appsflyer_unique_id : null,
-                        $event['price']);
+                        0);
 
-                    FacebookService::sendEvent($applicationDevices, $event['event_name'], $event['price']);
+                    FacebookService::sendEvent($applicationDevices, $event['event_name'], 0);
 
                     if ($event['price'] > 0) {
                         AppslyerService::sendEvent(
@@ -243,9 +243,9 @@ class SubscriptionsService
                     $subscription->application->bundle_id,
                     $deviceId,
                     (!is_null($applicationDevices)) ? $applicationDevices->appsflyer_unique_id : null,
-                    $event['price']);
+                    0);
 
-                FacebookService::sendEvent($applicationDevices, $event['event_name'], $event['price']);
+                FacebookService::sendEvent($applicationDevices, $event['event_name'], 0);
             }
 
         }
