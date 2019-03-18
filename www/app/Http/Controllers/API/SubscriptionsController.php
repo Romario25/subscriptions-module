@@ -90,7 +90,7 @@ class SubscriptionsController extends Controller
             ]);
 
             \Log::info('DEVICE_ID', [
-                'data' => $request->get('device_id')
+                'data' => $request->get('udid')
             ]);
 
 
@@ -103,10 +103,10 @@ class SubscriptionsController extends Controller
             ]);
 
             \Log::info('IS PREMIUM', [
-                'data' => $subscriptionsService->isPremium($application->id, $request->get('device_id'))
+                'data' => $subscriptionsService->isPremium($application->id, $request->get('udid'))
             ]);
 
-            return ['data' => $subscriptionsService->isPremium($application->id, $request->get('device_id'))];
+            return ['data' => $subscriptionsService->isPremium($application->id, $request->get('udid'))];
 
         } catch (\Exception $e) {
 
