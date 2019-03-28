@@ -379,9 +379,22 @@ class SubscriptionsService
 
         $keyEventDuration = array_keys($eventDuration);
 
+        \Log::info('keyEventDuration', [
+            'data' => $keyEventDuration
+        ]);
+
         $keySearch = array_search($subscription->product_id, array_keys($eventDuration));
 
+        \Log::info('keySearch', [
+            'data' => $keySearch
+        ]);
+
+
         $applicationProduct = $eventDuration[$keyEventDuration[$keySearch]];
+
+        \Log::info('applicationProduct', [
+            'data' => $applicationProduct
+        ]);
 
         $price = 0;
 
