@@ -12,24 +12,26 @@ class ApplicationDeviceService
             ->where('device_id', $deviceId)->first();
     }
 
-    public function add($applicationId, $deviceId, $idfa, $appsflyerUniqueId)
+    public function add($applicationId, $deviceId, $idfa, $appsflyerUniqueId, $location)
     {
         return ApplicationDevice::create([
             'application_id' => $applicationId,
             'device_id' => $deviceId,
             'idfa' => $idfa,
-            'appsflyer_unique_id' => $appsflyerUniqueId
+            'appsflyer_unique_id' => $appsflyerUniqueId,
+            'location' => $location
         ]);
     }
 
-    public function update($applicationId, $deviceId, $idfa, $appsflyerUniqueId)
+    public function update($applicationId, $deviceId, $idfa, $appsflyerUniqueId, $location)
     {
 
         return ApplicationDevice::where('application_id', $applicationId)
             ->where('device_id', $deviceId)
             ->update([
                 'idfa' => $idfa,
-                'appsflyer_unique_id' => $appsflyerUniqueId
+                'appsflyer_unique_id' => $appsflyerUniqueId,
+                'location' => $location
             ]);
     }
 

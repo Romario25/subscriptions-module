@@ -21,7 +21,8 @@ class SetDataController extends Controller
             $request->input('udid'),
             $request->input('appsflyer_id'),
             $request->input('idfa'),
-            $request->input('unique_id')
+            $request->input('unique_id'),
+            $request->input('location')
         );
 
         return [
