@@ -19,7 +19,8 @@ class SubscriptionsController extends Controller
 
         $responseByApple = $subscriptionsService->getResponseAppleReceipt(
             $request->input('app_id'),
-            $request->input('receipt-data')
+            $request->input('receipt-data'),
+            Application::ENV_PROD
         );
 
         $verifiedReceived = $subscriptionsService->verifyReceipt($responseByApple);

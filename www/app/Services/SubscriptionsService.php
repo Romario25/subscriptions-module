@@ -366,39 +366,31 @@ class SubscriptionsService
     public function getEventBySubscription(Subscription $subscription) : array
     {
 
-        $eventDuration = ApplicationProduct::where('application_id', $subscription->application_id)
-            ->get()->toArray();
+        $price = 0;
 
-
-        $subscriptionType = $subscription->type;
-
+        $screen = '';
 
         $prefix = '';
 
         $event_screen = '';
 
-        $keyEventDuration = array_keys($eventDuration);
+        $subscriptionType = $subscription->type;
 
-        \Log::info('keyEventDuration', [
-            'data' => $keyEventDuration
-        ]);
-
-        $keySearch = array_search($subscription->product_id, array_keys($eventDuration));
-
-        \Log::info('keySearch', [
-            'data' => $keySearch
-        ]);
+        $eventDuration = ApplicationProduct::where('application_id', 1)
+            ->get();
 
 
-        $applicationProduct = $eventDuration[$keyEventDuration[$keySearch]];
+        $filteredEventDuration = $eventDuration->filter(function ($item) use ($subscription) {
+            return $subscription->product_id == $item->product_name;
+        })->values()->toArray();
 
-        \Log::info('applicationProduct', [
-            'data' => $applicationProduct
-        ]);
 
-        $price = 0;
+        if (is_null($filteredEventDuration)) {
+            throw new \DomainException("Product name not found");
+        }
 
-        $screen = '';
+        $applicationProduct = $filteredEventDuration;
+
 
         switch ($subscriptionType) {
             case Subscription::TYPE_TRIAL:
