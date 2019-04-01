@@ -37,7 +37,9 @@ class TestController extends Controller
 
         $applicationProduct = $filteredEventDuration;
 
-        dd($filtered_collection);
+        dd($applicationProduct);
+
+        
 
         $keyEventDuration = array_keys($eventDuration);
 
