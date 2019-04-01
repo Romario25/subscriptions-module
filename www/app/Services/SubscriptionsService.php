@@ -376,7 +376,7 @@ class SubscriptionsService
 
         $subscriptionType = $subscription->type;
 
-        $eventDuration = ApplicationProduct::where('application_id', 1)
+        $eventDuration = ApplicationProduct::where('application_id', $subscription->application_id)
             ->get();
 
 
@@ -385,7 +385,7 @@ class SubscriptionsService
         })->values()->toArray();
 
 
-        if (is_null($filteredEventDuration)) {
+        if (count($filteredEventDuration) > 0) {
             throw new \DomainException("Product name not found");
         }
 
