@@ -51,7 +51,7 @@ class TestController extends Controller
             'data' => count($filteredEventDuration)
         ]);
 
-        if (count($filteredEventDuration) > 0) {
+        if (count($filteredEventDuration) == 0) {
             throw new \DomainException("Product name not found");
         }
 
