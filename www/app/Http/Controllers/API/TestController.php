@@ -25,29 +25,32 @@ class TestController extends Controller
         $eventDuration = ApplicationProduct::where('application_id', 1)
             ->get();
 
+        \Log::info('EVENT DURATION', [
+            'data' => $eventDuration
+        ]);
+
 
         $filteredEventDuration = $eventDuration->filter(function ($item) {
+
+//            \Log::info('FILTERED', [
+//                'product_id' => $subscription->product_id,
+//                'product_name' => $item->product_name,
+//                'data' => $subscription->product_id == $item->product_name
+//            ]);
+
             return 'com.appitate.callrecorder.monthly' == $item->product_name;
         })->values()->toArray();
 
 
-        if (is_null($filteredEventDuration)) {
+        \Log::info('FILTERED EVENT DURATION', [
+            'data' => $filteredEventDuration
+        ]);
+
+        if (count($filteredEventDuration) > 0) {
             throw new \DomainException("Product name not found");
         }
 
-        $applicationProduct = $filteredEventDuration;
-
-        dd($applicationProduct);
-
-
-
-        $keyEventDuration = array_keys($eventDuration);
-
-      //  dd($keyEventDuration);
-
-        $keySearch = array_search('com.appitate.callrecorder.monthly', array_keys($eventDuration));
-
-        $applicationProduct = $eventDuration[$keyEventDuration[$keySearch]];
+        $applicationProduct = $filteredEventDuration[0];
 
         dd($applicationProduct);
 
