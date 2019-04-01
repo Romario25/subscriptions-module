@@ -6,6 +6,7 @@ services:
             dockerfile: nginx.docker
         volumes:
             - ./www:/app
+        restart: always
         depends_on:
             - php-fpm
         networks:
@@ -15,6 +16,7 @@ services:
         build:
             context: ./docker
             dockerfile: php-fpm.docker
+        restart: always
         volumes:
             - ./www:/app
         environment:
@@ -31,6 +33,7 @@ services:
         build:
             context: ./
             dockerfile: docker/php-cli.docker
+        restart: always
         volumes:
             - ./www:/app
         depends_on:
@@ -46,6 +49,7 @@ services:
 
     mysql:
         image: mysql:5.7
+        restart: always
         volumes:
             - ./mysql:/var/lib/mysql
         environment:
