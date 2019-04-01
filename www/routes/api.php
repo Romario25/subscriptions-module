@@ -28,5 +28,5 @@ Route::post("/application/add", ['uses' => 'API\ApplicationController@add']);
 
 Route::get('/test', ['uses' => 'API\TestController@index']);
 
-Route::get('/test-server', ['uses' => 'API\TestController@testServer']);
+Route::post('/test-server', ['uses' => 'API\TestController@testServer']);
 
