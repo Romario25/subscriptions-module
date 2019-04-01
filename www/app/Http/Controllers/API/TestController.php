@@ -39,7 +39,7 @@ class TestController extends Controller
 
         dd($applicationProduct);
 
-        
+
 
         $keyEventDuration = array_keys($eventDuration);
 

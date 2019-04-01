@@ -366,6 +366,11 @@ class SubscriptionsService
     public function getEventBySubscription(Subscription $subscription) : array
     {
 
+        \Log::info('Subscription', [
+           'data' => $subscription
+        ]);
+
+
         $price = 0;
 
         $screen = '';
@@ -378,6 +383,10 @@ class SubscriptionsService
 
         $eventDuration = ApplicationProduct::where('application_id', $subscription->application_id)
             ->get();
+
+        \Log::info('EVENT DURATION', [
+            'data' => $eventDuration
+        ]);
 
 
         $filteredEventDuration = $eventDuration->filter(function ($item) use ($subscription) {
