@@ -2,6 +2,7 @@
 namespace App\Http\Controllers\API;
 
 
+use App\Entities\Application;
 use App\Entities\ApplicationProduct;
 use App\Entities\Subscription;
 use App\Http\Controllers\Controller;
@@ -59,5 +60,15 @@ class TestController extends Controller
 
         dd($applicationProduct);
 
+    }
+
+
+
+
+    public function testServer()
+    {
+        $application = Application::all();
+
+        return ['status' => 'OK'];
     }
 }
