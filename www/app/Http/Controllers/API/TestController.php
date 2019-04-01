@@ -43,7 +43,12 @@ class TestController extends Controller
 
 
         \Log::info('FILTERED EVENT DURATION', [
-            'data' => $filteredEventDuration
+            'data' => $filteredEventDuration,
+            'type' => gettype($filteredEventDuration)
+        ]);
+
+        \Log::info('COUNT FILTERED EVENT DURATION', [
+            'data' => count($filteredEventDuration)
         ]);
 
         if (count($filteredEventDuration) > 0) {
