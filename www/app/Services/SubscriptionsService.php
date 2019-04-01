@@ -390,15 +390,26 @@ class SubscriptionsService
 
 
         $filteredEventDuration = $eventDuration->filter(function ($item) use ($subscription) {
+
+            \Log::info('FILTERED', [
+                'product_id' => $subscription->product_id,
+                'product_name' => $item->product_name,
+                'data' => $subscription->product_id == $item->product_name
+            ]);
+
             return $subscription->product_id == $item->product_name;
         })->values()->toArray();
 
+
+        \Log::info('FILTERED EVENT DURATION', [
+            'data' => $filteredEventDuration
+        ]);
 
         if (count($filteredEventDuration) > 0) {
             throw new \DomainException("Product name not found");
         }
 
-        $applicationProduct = $filteredEventDuration;
+        $applicationProduct = $filteredEventDuration[0];
 
 
         switch ($subscriptionType) {
