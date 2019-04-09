@@ -52,6 +52,10 @@ class SubscriptionsService
 
         $type = $this->defineType($pendingRenewalInfo, $latestReceiptInfo, $this->getLifetimeProductName($appId));
 
+        \Log::info('TYPE SUBSCRIPTION', [
+            'data' => $type
+        ]);
+
         if ($type == Subscription::TYPE_TRIAL) {
             $trial = 1;
         }
@@ -312,7 +316,16 @@ class SubscriptionsService
 
         if (!is_null($lifetimeProductName)) {
             foreach ($latestReceiptInfo as $item) {
+
+                \Log::info('PRODUCT ID INFO', [
+                    'data' => $item->product_id
+                ]);
+
                 if ($item->product_id == $lifetimeProductName) {
+
+                    \Log::info('LIFETIME INFO', [
+                       'data' => $item->product_id
+                    ]);
                     return Subscription::TYPE_LIFETIME;
                 }
             }
