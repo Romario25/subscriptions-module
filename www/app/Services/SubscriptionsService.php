@@ -529,8 +529,16 @@ class SubscriptionsService
 
     private function getLifetimeProductName($applicationId)
     {
+
+        \Log::info('application_id'. $applicationId);
+
+
         $product = ApplicationProduct::where('application_id', $applicationId)
             ->where('is_lifetime', 1)->first();
+
+        \Log::info('PRODUCT', [
+            'data' => $product
+        ]);
 
         if (!is_null($product)) {
             return $product->product_name;
