@@ -87,11 +87,6 @@ class SubscriptionsService
         $startDate = Carbon::now()->startOfDay()->timestamp;
 
 
-        \Log::info('SUBSCRIPTION TYPE : ' . $subscription->type);
-
-        \Log::info('DIFF TRANSACTION', ['data' => $diffTransaction]);
-        \Log::info('COUNT DIFF TRANSACTION', ['data' => count($diffTransaction)]);
-
 
         if (count($diffTransaction) == 1  && $diffTransaction[0]['purchase_date_ms'] > $startDate * 1000) {
 
@@ -102,8 +97,6 @@ class SubscriptionsService
 
             if ($subscription->type == Subscription::TYPE_TRIAL) {
 
-
-                \Log::info('BLOCK_TRIAL_1');
 
                 AppslyerService::sendEvent(
                     $subscription->application->appsflyer_dev_key,
@@ -316,16 +309,9 @@ class SubscriptionsService
     private function defineType($pendingRenewalInfo, $latestReceiptInfo)
     {
 
-        \Log::info("LATEST RECEIPT INFO SORT", [
-            'data' => $latestReceiptInfo
-        ]);
-
-
         $receiptInfo = $this->sortLatestReceiptInfo($latestReceiptInfo);
 
-        \Log::info("RECEIPT INFO SORT", [
-           'data' => $receiptInfo
-        ]);
+
 
         $endReceiptInfo = end($receiptInfo);
 
