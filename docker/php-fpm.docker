@@ -21,7 +21,27 @@ RUN touch /var/log/cron.log
 
 COPY ./php/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-
+# Install New Relic
+RUN apt-get update
+RUN apt-get -yqq install wget
+RUN apt-get -yqq install python-setuptools
+RUN easy_install pip
+RUN mkdir -p /opt/newrelic
+WORKDIR /opt/newrelic
+RUN wget -r -nd --no-parent -Alinux.tar.gz \
+    http://download.newrelic.com/php_agent/release/ >/dev/null 2>&1 \
+    && tar -xzf newrelic-php*.tar.gz --strip=1
+ENV NR_INSTALL_SILENT true
+ENV NR_INSTALL_KEY eu01xxfd43c3c5020b7b68bc3956c9413c2a3891
+ENV ENVIRONMENT callrecorder2
+RUN bash newrelic-install install
+WORKDIR /
+RUN pip install newrelic-plugin-agent
+RUN sed -i -e 's/"REPLACE_WITH_REAL_KEY"/"eu01xxfd43c3c5020b7b68bc3956c9413c2a3891"/' \
+     -e 's/newrelic.appname = "PHP Application"/newrelic.appname = "subslab.com"/' \
+         /usr/local/etc/php/conf.d/newrelic.ini
+RUN mkdir -p /var/log/newrelic
+RUN mkdir -p /var/run/newrelic
 
 WORKDIR /app
 
