@@ -29,6 +29,10 @@ class SaveSubscriptionService
 
         /** @var Subscription $subscription */
 
+        \Log::info('SAVE SUBSCRIPTION APP ID', [
+            'data' => $appId
+        ]);
+
         $subscription = Subscription::where('device_id', $subscriptionDto->deviceId)
             ->whereHas('application', function($query) use ($appId) {
                 $query->where('app_id', $appId);

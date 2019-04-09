@@ -90,7 +90,7 @@ class SubscriptionsController extends Controller
                 'data' => $request->get('bundle_id')
             ]);
 
-            \Log::info('DEVICE_ID', [
+            \Log::info('DEVICE_ID CHECK IS PREMIUM', [
                 'data' => $request->get('udid')
             ]);
 
