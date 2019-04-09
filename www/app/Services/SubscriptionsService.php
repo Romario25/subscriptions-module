@@ -53,7 +53,8 @@ class SubscriptionsService
         $type = $this->defineType($pendingRenewalInfo, $latestReceiptInfo, $this->getLifetimeProductName($appId));
 
         \Log::info('TYPE SUBSCRIPTION', [
-            'data' => $type
+            'data' => $type,
+            'device_id' => $deviceId
         ]);
 
         if ($type == Subscription::TYPE_TRIAL) {
