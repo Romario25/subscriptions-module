@@ -50,7 +50,7 @@ class SubscriptionsService
 
         $endLatestReceiptInfo = end($latestReceiptInfo);
 
-        $type = $this->defineType($pendingRenewalInfo, $latestReceiptInfo);
+        $type = $this->defineType($pendingRenewalInfo, $latestReceiptInfo, $this->getLifetimeProductName($appId));
 
         if ($type == Subscription::TYPE_TRIAL) {
             $trial = 1;
@@ -304,10 +304,20 @@ class SubscriptionsService
     /**
      * @param object $pendingRenewalInfo
      * @param array $latestReceiptInfo
+     * @param null $lifetimeProductName
      * @return string
      */
-    private function defineType($pendingRenewalInfo, $latestReceiptInfo)
+    private function defineType($pendingRenewalInfo, $latestReceiptInfo, $lifetimeProductName = null)
     {
+
+        if (!is_null($lifetimeProductName)) {
+            foreach ($latestReceiptInfo as $item) {
+                if ($item->product_id == $lifetimeProductName) {
+                    return Subscription::TYPE_LIFETIME;
+                }
+            }
+        }
+
 
         $receiptInfo = $this->sortLatestReceiptInfo($latestReceiptInfo);
 
@@ -502,6 +512,18 @@ class SubscriptionsService
         }
 
         return $subscription->isPremium();
+    }
+
+    private function getLifetimeProductName($applicationId)
+    {
+        $product = ApplicationProduct::where('application_id', $applicationId)
+            ->where('', 1)->first();
+
+        if (!is_null($product)) {
+            return $product->product_name;
+        }
+
+        return null;
     }
 
 
