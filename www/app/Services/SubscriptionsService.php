@@ -533,8 +533,10 @@ class SubscriptionsService
         \Log::info('application_id'. $applicationId);
 
 
-        $product = ApplicationProduct::where('application_id', $applicationId)
-            ->where('is_lifetime', 1)->first();
+        $product = ApplicationProduct::whereHas('application', function($query) use($applicationId)  {
+            $query->where('app_id', $applicationId);
+        })->where('is_lifetime', 1)
+            ->first();
 
         \Log::info('PRODUCT', [
             'data' => $product

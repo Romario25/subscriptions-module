@@ -13,4 +13,9 @@ class ApplicationProduct extends Model
     public $guarded = [];
 
     protected $table = 'application_products';
+
+    public function application()
+    {
+        return $this->belongsTo(Application::class, 'application_id', 'id');
+    }
 }

@@ -23,11 +23,16 @@ class TestController extends Controller
 //        dd($subscriptions);
 
 
-        $eventDuration = ApplicationProduct::where('application_id', 1)
-            ->get();
+        $eventDuration = ApplicationProduct::whereHas('application', function($query)  {
+            $query->where('app_id', 1447098963);
+        })->where('is_lifetime', 1)
+            ->first();
+
+
+        dd($eventDuration->product_name);
 
         \Log::info('EVENT DURATION', [
-            'data' => $eventDuration
+            'data' => $eventDuration->product_name
         ]);
 
 
