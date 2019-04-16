@@ -73,9 +73,6 @@ class TestController extends Controller
     public function testServer()
     {
 
-        \Log::channel('webhook_log')->info('APPLE REQUEST DATA WEBHOOK', [
-            'data' => 'test'
-        ]);
 
         $application = Application::all();
 
