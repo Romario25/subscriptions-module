@@ -14,9 +14,13 @@ class WebhookController extends Controller
     {
 
 
-        \Log::info('APPLE REQUEST DATA', [
-            'data' => $request->all()
-        ]);
+//        \Log::info('APPLE REQUEST DATA WEBHOOK', [
+//            'data' => $request->all()
+//        ]);
+
+//        \Log::channel('webhook_log')->info('APPLE REQUEST DATA WEBHOOK', [
+//           'data' => $request->all()
+//        ]);
 
         $latestReceipt = $request->input('latest_receipt_info');
 

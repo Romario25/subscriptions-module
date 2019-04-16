@@ -39,6 +39,16 @@ return [
             'channels' => ['daily'],
         ],
 
+        'webhook_log' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/webhook.log'),
+        ],
+
+        'facebook_log' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/facebook.log'),
+        ],
+
         'single' => [
             'driver' => 'single',
             'path' => storage_path('logs/laravel.log'),
