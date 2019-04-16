@@ -75,7 +75,7 @@ class FacebookService
 
             $facebookAppId = $applicationDevice->application->facebook_app_id;
 
-            \Log::info('SEND FACEBOOK EVENT BODY ', [
+            \Log::channel('facebook_log')->info('SEND FACEBOOK EVENT BODY ', [
                 'data' => $body
             ]);
 
@@ -87,19 +87,19 @@ class FacebookService
 
             $body = $response->getBody();
 
-            \Log::info('FACEBOOK EVENT RESPONSE', [
+            \Log::channel('facebook_log')->info('FACEBOOK EVENT RESPONSE', [
                 'data' => $body->getContents()
             ]);
 
             $phrase = $response->getReasonPhrase();
 
             if ($phrase != 'OK') {
-                \Log::error('Bad response from apps flyer analytics:'.PHP_EOL.$response->getBody());
+                \Log::channel('facebook_log')->error('Bad response from facebook analytics:'.PHP_EOL.$response->getBody());
                 return;
             }
 
-        } catch (Guzzle $e) {
-            \Log::error('SEND EVENT APPSFLYER : :'. $e->getMessage());
+        } catch (\Exception $e) {
+            \Log::channel('facebook_log')->error('SEND EVENT FACEBOOK : :'. $e->getMessage());
             return;
         }
     }
